@@ -50,9 +50,12 @@ function EmailTemplateView() {
   }
 
   const [smsTemp, setBooks] = useState(null);
-  const apiURL = "/api/template/emailtemplates";
+  const apiURL = "http://localhost:9090/api/template/emailtemplates";
+
   const fetchData = async () => {
-    const response = await axios.get(apiURL);
+    const response = await axios.get(apiURL, {
+      params: { templateType: "EMAIL" },
+    });
     setBooks(response.data);
   };
 
@@ -141,8 +144,8 @@ function EmailTemplateView() {
                 smsTemp.map((item, index) => {
                   return (
                     <TableRow key={item._id}>
-                      <TableCell size="medium"> {item.tname} </TableCell>
-                      <TableCell size="medium"> {item.text} </TableCell>
+                      <TableCell size="medium"> {item.templateName} </TableCell>
+                      <TableCell size="medium"> {item.templateText} </TableCell>
                       <TableCell>
                         <ButtonGroup>
                           <Button

@@ -1,0 +1,20 @@
+[
+  {
+    "workflowName": "WF5",
+    "firstName": "Neha",
+    "lastName": "Ugyal",
+    "contactNo": "8800513265",
+    "emailId": "neha.ugyal14@gmail.com",
+    "billId": "BILL0901",
+    "openAmount": 800
+  },
+  {
+    "workflowName": "WF5",
+    "firstName": "Rakesh",
+    "lastName": "Kumar",
+    "contactNo": "8800513266",
+    "emailId": "rakd@gmail.com",
+    "billId": "BILL0902",
+    "openAmount": 1600
+  }
+]

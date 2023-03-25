@@ -42,10 +42,14 @@ function ViewWorkflowSteps() {
 
   function getData() {
     axios
-      .get(`api/workflow/readoneWFtemplate/`, { params: { _id: idd } })
+      .get(`http://localhost:9090/api/workflow/readoneWFtemplate`, {
+        params: { workflowTemplateId: idd },
+      })
       .then((res) => {
-        console.log("This is from readoneWFtemplate API:" + res.data.wfsteps);
-        setWfSteps(res.data.wfsteps);
+        console.log(
+          "This is from readoneWFtemplate API:" + res.data.workflowTemplateStep
+        );
+        setWfSteps(res.data.workflowTemplateStep);
         console.log("In View workflow Step API response");
       });
   }
@@ -71,8 +75,8 @@ function ViewWorkflowSteps() {
                 wfsteps.map((item, index) => {
                   return (
                     <TableRow>
-                      <TableCell>{item.NWait}</TableCell>
-                      <TableCell>{item.NName}</TableCell>
+                      <TableCell>{item.workflowTemplateStepWait}</TableCell>
+                      <TableCell>{item.workflowTemplateStepName}</TableCell>
                     </TableRow>
                   );
                 })}

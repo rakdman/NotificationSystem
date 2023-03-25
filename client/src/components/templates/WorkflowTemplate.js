@@ -29,7 +29,7 @@ function WorkflowTemplate() {
 
   let submitHandler;
 
-  const [wfname, setWfName] = useState();
+  const [workflowName, setworkflowName] = useState();
   // const [templateText,setTemplateText] = useState();
   // const [newWFStep,setNewWFtep] = useState([]);
   // const [templateValues, setTemplateValues] = useState([])
@@ -51,28 +51,46 @@ function WorkflowTemplate() {
     // console.log(event)
 
     // const payload = JSON.stringify({tname:templateName, text:templateText });
-    // var steps=[{NWait:number1,NName:select1},{NWait:number2,NName:select2},{NWait:number3,NName:select3},{NWait:number4,NName:select4},{NWait:number5,NName:select5}]
+    // var steps=[{workflowTemplateStepWait:number1,workflowTemplateStepName:select1},{workflowTemplateStepWait:number2,workflowTemplateStepName:select2},{workflowTemplateStepWait:number3,workflowTemplateStepName:select3},{workflowTemplateStepWait:number4,workflowTemplateStepName:select4},{workflowTemplateStepWait:number5,workflowTemplateStepName:select5}]
 
     var steps = [];
 
     if (event.number1 && event.select1)
-      steps.push({ NWait: event.number1, NName: event.select1 });
+      steps.push({
+        workflowTemplateStepWait: event.number1,
+        workflowTemplateStepName: event.select1,
+      });
 
     if (event.number2 && event.select2 && steps)
-      steps.push({ NWait: event.number2, NName: event.select2 });
+      steps.push({
+        workflowTemplateStepWait: event.number2,
+        workflowTemplateStepName: event.select2,
+      });
 
     if (event.number3 && event.select3 && steps)
-      steps.push({ NWait: event.number3, NName: event.select3 });
+      steps.push({
+        workflowTemplateStepWait: event.number3,
+        workflowTemplateStepName: event.select3,
+      });
 
     if (event.number4 && event.select4 && steps)
-      steps.push({ NWait: event.number4, NName: event.select4 });
+      steps.push({
+        workflowTemplateStepWait: event.number4,
+        workflowTemplateStepName: event.select4,
+      });
 
     if (event.number5 && event.select5 && steps)
-      steps.push({ NWait: event.number5, NName: event.select5 });
+      steps.push({
+        workflowTemplateStepWait: event.number5,
+        workflowTemplateStepName: event.select5,
+      });
 
-    // axios.post(`api/workflow/create`,{wfname:wfname,wfsteps:[{NWait:number1,NName:select1},{NWait:number2,NName:select2},{NWait:number3,NName:select3},{NWait:number4,NName:select4},{NWait:number5,NName:select5}]})
+    // axios.post(`api/workflow/create`,{workflowName:workflowName,wfsteps:[{workflowTemplateStepWait:number1,workflowTemplateStepName:select1},{workflowTemplateStepWait:number2,workflowTemplateStepName:select2},{workflowTemplateStepWait:number3,workflowTemplateStepName:select3},{workflowTemplateStepWait:number4,workflowTemplateStepName:select4},{workflowTemplateStepWait:number5,workflowTemplateStepName:select5}]})
     axios
-      .post(`api/workflow/create`, { wfname: event.wfname, wfsteps: steps })
+      .post(`http://localhost:9090/api/workflow/create`, {
+        workflowTemplateName: event.workflowName,
+        workflowTemplateStep: steps,
+      })
       .then((res) => {
         console.log(res.data);
         //    console.log("Response from workflow create API");
@@ -117,10 +135,12 @@ function WorkflowTemplate() {
 
   const [smsTemp, setBooks] = useState(null);
   // const apiURL = "api/template/readalltemplates";   // This API to populate the SMS templates
-  const apiURL = "/api/template/emailtemplates";
+  const apiURL = "http://localhost:9090/api/template/emailtemplates";
 
   const fetchData = async () => {
-    var response = await axios.get(apiURL);
+    var response = await axios.get(apiURL, {
+      params: { templateType: "EMAIL" },
+    });
     //   console.log(response.data)
     setBooks(response.data);
   };
@@ -157,17 +177,17 @@ function WorkflowTemplate() {
           <Typography variant="subtitle1">Workflow Template</Typography>
           <br />
 
-          {/* <TextField label= "Workflow Name" variant="outlined" type="Text" value={wfname} onChange={ (event) => {setWfName(event.target.value)}}></TextField> */}
+          {/* <TextField label= "Workflow Name" variant="outlined" type="Text" value={workflowName} onChange={ (event) => {setworkflowName(event.target.value)}}></TextField> */}
           <TextField
             label="Workflow Name"
             variant="outlined"
             type="Text"
-            {...register("wfname", {
+            {...register("workflowName", {
               required: "Input required",
               maxLength: { value: 50, message: "Maximum 50 characters" },
             })}
           />
-          {errors.wfname && errors.wfname.message}
+          {errors.workflowName && errors.workflowName.message}
           <br />
           <Paper elevation={2}>
             <Table>
@@ -187,7 +207,7 @@ function WorkflowTemplate() {
                 {/* {smsTemp && smsTemp.map((item,index)=> {array.push(item.tname)})} */}
                 {smsTemp &&
                   smsTemp.map((item, index) => {
-                    array.push(item.text);
+                    array.push(item.templateName);
                   })}
                 <TableRow>
                   <TableCell>

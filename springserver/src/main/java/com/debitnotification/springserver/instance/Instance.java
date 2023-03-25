@@ -27,7 +27,7 @@ public class Instance {
     List<WorkflowStep> workflowStep;
     String instanceStatus;
     String allowedRoles;
-    Date entryDate;
+    Date entryDate = new Date();
     String billId;
     double openAmount;
 

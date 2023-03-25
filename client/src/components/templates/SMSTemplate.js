@@ -53,9 +53,10 @@ function SMSTemplate() {
       text: event.templateText,
     });
     axios
-      .post(`api/template/create`, {
-        tname: event.templateName,
-        text: event.templateText,
+      .post(`http://localhost:9090/api/template/createtemplate`, {
+        templateName: event.templateName,
+        templateText: event.templateText,
+        templateType: "SMS",
       })
       .then((res) => {
         console.log(res.data);

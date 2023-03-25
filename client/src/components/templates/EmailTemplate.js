@@ -53,9 +53,10 @@ function EmailTemplate() {
       text: event.templateText,
     });
     axios
-      .post(`api/template/createemail`, {
-        tname: event.templateName,
-        text: event.templateText,
+      .post(`http://localhost:9090/api/template/createtemplate`, {
+        templateName: event.templateName,
+        templateText: event.templateText,
+        templateType: "EMAIL",
       })
       .then((res) => {
         console.log(res.data);

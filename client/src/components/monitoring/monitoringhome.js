@@ -121,7 +121,6 @@ function MonitoringHome() {
     axios
       .get(
         url,
-        { headers },
         {
           params: {
             firstName: firstName,
@@ -130,16 +129,23 @@ function MonitoringHome() {
             emailId: emailId,
             searchCode: searchCode,
           },
-        }
+        },
+        { headers }
       )
       .then((response) => {
         //  var responsefirstname=response.data.firstName;
         //  console.log("responsefirstname:"+responsefirstname);
-        let res = JSON.parse(response.data);
+        console.log(response);
+        console.log(JSON.stringify(response));
+        // let res = JSON.parse(response.data);
         // console.log(res);
-        res.map((item) => console.log(item.firstName));
-        setInstanceData(res);
-        setRows(res);
+
+        setInstanceData(response.data);
+        setRows(response.data);
+
+        // res.map((item) => console.log(item.firstName));
+        // setInstanceData(res);
+        // setRows(res);
       });
   };
 
@@ -378,7 +384,7 @@ function MonitoringHome() {
                             </TableCell>
                             <TableCell size="medium">
                               {" "}
-                              {item.entrydate.slice(0, 10)}{" "}
+                              {item.entrydate}{" "}
                             </TableCell>
                             {/* <Button variant="outlined"  fullWidth='false' onClick= {viewHandler} >View</Button>  */}
 

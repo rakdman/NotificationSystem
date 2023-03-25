@@ -63,7 +63,9 @@ function LoadingHome() {
 
     async function loadallfiles() {
       axios
-        .post(`api/integration/loadfile`, { filename: filename })
+        .post(`http://localhost:9090/api/integration/loadfile`, {
+          filename: filename,
+        })
         .then((res) => console.log("Customer File Uploaded"));
     }
 
