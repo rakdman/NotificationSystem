@@ -6,8 +6,8 @@ If a payment is received after loading a payment file then it will finish the wo
 
 ### Technologies used: 
   ReactJS, Material UI - Frontend
-  NodeJS, Express- Backend
-  Mongo db- Database
+  SpringBoot - Backend
+  Postresql- Database
   
 ### The web application is available on Heroku free account
 
