@@ -1,4 +1,4 @@
-### DebtNotificationSystem    UNDER DEVELOPMENT
+### DebtNotificationSystem    UNDER DEVELOPMENT - Migration of backend from NodeJS to Spring Boot
 
 This web application project is developed to send email reminders to the customers based on customer data loaded in the database, who have not paid the bills and based on preconfigured business worklfows (i.e. after how many days each email reminder to be sent until payment is recieved).
 
