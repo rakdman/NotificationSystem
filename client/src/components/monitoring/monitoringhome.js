@@ -354,7 +354,7 @@ function MonitoringHome() {
                       )
                       .map((item, index) => {
                         return (
-                          <TableRow key={item._id}>
+                          <TableRow key={item.instanceId}>
                             <TableCell size="medium">
                               {" "}
                               {item.firstName}{" "}
@@ -371,7 +371,10 @@ function MonitoringHome() {
                               {" "}
                               {item.emailID}{" "}
                             </TableCell>
-                            <TableCell size="medium"> {item.wfname} </TableCell>
+                            <TableCell size="medium">
+                              {" "}
+                              {item.workflowName}{" "}
+                            </TableCell>
                             <TableCell size="medium"> {item.billId} </TableCell>
                             <TableCell size="medium">
                               {" "}
@@ -396,7 +399,7 @@ function MonitoringHome() {
                               onClick={() => {
                                 // console.log('View Handler Button');
                                 setOpen(true);
-                                setIdd(item._id);
+                                setIdd(item.instanceId);
                                 // console.log('Instance view item._id:'+item._id);
                               }}
                               fullWidth="false"

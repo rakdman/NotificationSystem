@@ -58,13 +58,18 @@ function LoadingHome() {
   }, []);
 
   let uploadDataFile = (event) => {
-    // console.log('Inside file upload function');
-    // console.log('This is the filename:'+filename);
+    const filename = "customerdata.json";
+
+    console.log("PRINTTTTTTTTTTT");
+
+    console.log(filename);
 
     async function loadallfiles() {
       axios
-        .post(`http://localhost:9090/api/integration/loadfile`, {
-          filename: filename,
+        .post("http://localhost:9090/api/instances/loadfile", {
+          params: {
+            fileName: filename,
+          },
         })
         .then((res) => console.log("Customer File Uploaded"));
     }
@@ -81,7 +86,12 @@ function LoadingHome() {
   let uploadPaymentFile = (event) => {
     async function loadallpaymentfiles() {
       axios
-        .post(`api/integration/loadpaymentfile`, { filename: filename })
+        .post(
+          `http://localhost:9090/api/instances/loadpaymentfile`
+          // {
+          //   fileName: filename,
+          // }
+        )
         .then((res) => console.log("Payment File Uploaded"));
     }
 

@@ -21,9 +21,5 @@ public class WorkflowStep {
     private String stepStatus;
     private Date executionDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "instanceId")
-    private Instance instance;
-
 
 }

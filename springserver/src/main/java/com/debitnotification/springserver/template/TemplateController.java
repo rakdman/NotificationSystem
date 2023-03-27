@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@CrossOrigin
+@CrossOrigin("http://localhost:3000")
 @RequestMapping("/api/template")
 public class TemplateController {
     private final TemplateService templateService;
@@ -22,4 +22,23 @@ public class TemplateController {
     public ResponseEntity<List<Template>> findAllTemplates(@RequestParam(required = false) TemplateType templateType) {
         return ResponseEntity.ok(templateService.getAllTemplates(templateType));
     }
+
+
+    @GetMapping("/readoneemailtemplate")
+    public ResponseEntity<Template> findOneTemplate(@RequestParam Long templateId) {
+        return ResponseEntity.ok(templateService.getOneTemplate(templateId));
+    }
+
+    @PutMapping("/updateemailtemplate")
+    public ResponseEntity<Template> updateTemplate(@RequestBody Template template) {
+        return ResponseEntity.ok(templateService.updateTemplate(template));
+    }
+
+    @DeleteMapping("/deleteemailtemplate")
+    public ResponseEntity deleteTemplate(@RequestParam Long templateId) {
+        templateService.deleteTemplate(templateId);
+        return ResponseEntity.ok(null);
+    }
+
+
 }

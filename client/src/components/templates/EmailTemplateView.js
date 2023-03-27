@@ -76,7 +76,9 @@ function EmailTemplateView() {
     if (_id) {
       // await axios.delete(`api/template/deleteemailtemplate`,{params:{idd:idd}}).then(
       await axios
-        .delete(`api/template/deleteemailtemplate`, { params: { idd: _id } })
+        .delete(`http://localhost:9090/api/template/deleteemailtemplate`, {
+          params: { templateId: _id },
+        })
         .then((res) => {
           console.log("Deletion done for idd:");
 
@@ -143,7 +145,7 @@ function EmailTemplateView() {
               {smsTemp &&
                 smsTemp.map((item, index) => {
                   return (
-                    <TableRow key={item._id}>
+                    <TableRow key={item.templateId}>
                       <TableCell size="medium"> {item.templateName} </TableCell>
                       <TableCell size="medium"> {item.templateText} </TableCell>
                       <TableCell>
@@ -155,7 +157,7 @@ function EmailTemplateView() {
                             onClick={() => {
                               // console.log('From editRowHandler ');
                               setOpen(true);
-                              setIdd(item._id);
+                              setIdd(item.templateId);
                               // console.log('It is from client EmailTemplateView: item._id:'+item._id);
                               // console.log('It is from client EmailTemplateView id:'+idd);
                             }}
@@ -179,7 +181,7 @@ function EmailTemplateView() {
                               // console.log('Indo deletion onclick ');
                               // setIdd(item._id);
                               // console.log('idd '+idd);
-                              deletion(item._id);
+                              deletion(item.templateId);
                             }}
                           >
                             Delete

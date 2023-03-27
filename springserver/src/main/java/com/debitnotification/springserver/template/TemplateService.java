@@ -2,10 +2,12 @@ package com.debitnotification.springserver.template;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 
 @Service
+@CrossOrigin
 public class TemplateService {
     private final TemplateRepo templateRepo;
 
@@ -25,4 +27,16 @@ public class TemplateService {
         return templateRepo.findAll();
     }
 
+    public Template getOneTemplate(long templateId) {
+        return templateRepo.findById(templateId).get();
+    }
+
+    public Template updateTemplate(Template template) {
+        templateRepo.save(template);
+        return template;
+    }
+
+    public void deleteTemplate(Long templateId) {
+        templateRepo.deleteById(templateId);
+    }
 }

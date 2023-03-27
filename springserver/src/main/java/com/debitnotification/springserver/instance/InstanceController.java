@@ -1,16 +1,11 @@
 package com.debitnotification.springserver.instance;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -34,10 +29,20 @@ public class InstanceController {
         return ResponseEntity.ok(instanceService.getInstancesByParameters(firstName, lastName, contactNo, emailId));
     }
 
-    @PostMapping("/loadfile")
-    public void loadfile() throws IOException {
-        instanceService.loadfile();
+    @GetMapping(value = "/readoneinstancebyid", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Instance> readInstanceById(@RequestParam Integer instanceId) {
+        return ResponseEntity.ok(instanceService.getInstancesById(instanceId));
     }
 
+
+    @PostMapping("/loadfile")
+    public void loadFile() throws IOException {
+        instanceService.loadDataFile();
+    }
+
+    @PostMapping("/loadpaymentfile")
+    public void loadPaymentFile() throws IOException {
+        instanceService.loadPaymentFile();
+    }
 
 }

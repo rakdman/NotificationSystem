@@ -25,8 +25,8 @@ function ViewInstanceSteps() {
 
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
-  const [wfsteps, setWfSteps] = useState();
-  const [wfName, setWfName] = useState();
+  const [workflowSteps, setWfSteps] = useState();
+  const [workflowName, setWfName] = useState();
   const { isLoggedIn, idd, setIdd } = useContext(AuthContext);
 
   console.log("In View SMS steps");
@@ -49,16 +49,18 @@ function ViewInstanceSteps() {
 
     // }
     axios
-      .get(`api/instances/readoneinstancebyid/`, { params: { idd: idd } })
+      .get(`http://localhost:9090/api/instances/readoneinstancebyid`, {
+        params: { instanceId: idd },
+      })
       .then((res) => {
         console.log(
           "This is firstName from getData function:" + res.data.firstName
         );
         setFirstName(res.data.firstName);
         setLastName(res.data.lastName);
-        setWfSteps(res.data.wfsteps);
-        setWfName(res.data.wfname);
-        console.log(res.data.wfsteps);
+        setWfSteps(res.data.workflowStep);
+        setWfName(res.data.workflowName);
+        console.log(res.data.workflowStep);
         console.log("response of the api:" + res.data.firstName);
       });
   }
@@ -103,7 +105,7 @@ function ViewInstanceSteps() {
       <Container maxWidth="xl">
         <FormControl onSubmit={submitHandler} size="medium">
           {/* <Typography variant="h6">Instance Processing Detail</Typography> */}
-          <Typography variant="h6">WFName:{wfName}</Typography>
+          <Typography variant="h6">WFName:{workflowName}</Typography>
           <Typography variant="h6">Id:{idd}</Typography>
 
           <Table>
@@ -116,25 +118,25 @@ function ViewInstanceSteps() {
                 <TableCell>Status</TableCell>
               </TableRow>
 
-              {wfsteps &&
-                wfsteps.map((item, index) => {
+              {workflowSteps &&
+                workflowSteps.map((item, index) => {
                   return (
                     <TableRow>
                       {/* <TableCell>{item._id}</TableCell> */}
-                      <TableCell>{item.sName}</TableCell>
+                      <TableCell>{item.stepName}</TableCell>
                       <TableCell>
-                        {item.sscheduledDateTime &&
-                          item.sscheduledDateTime.slice(0, 10) +
+                        {item.stepScheduleDate &&
+                          item.stepScheduleDate.slice(0, 10) +
                             " " +
-                            item.sscheduledDateTime.slice(11, 19)}
+                            item.stepScheduleDate.slice(11, 19)}
                       </TableCell>
                       <TableCell>
-                        {item.sexecutionDateTime &&
-                          item.sexecutionDateTime.slice(0, 10) +
+                        {item.executionDate &&
+                          item.executionDate.slice(0, 10) +
                             " " +
-                            item.sexecutionDateTime.slice(11, 19)}
+                            item.executionDate.slice(11, 19)}
                       </TableCell>
-                      <TableCell>{item.sstatus}</TableCell>
+                      <TableCell>{item.stepStatus}</TableCell>
                     </TableRow>
                   );
                 })}

@@ -8,4 +8,5 @@ public interface WorkflowTemplateRepo extends JpaRepository<WorkflowTemplate, Lo
 
     public WorkflowTemplate findByWorkflowTemplateId(long workflowTemplateId);
 
+    public WorkflowTemplate findByWorkflowTemplateName(String workflowTemplateName);
 }

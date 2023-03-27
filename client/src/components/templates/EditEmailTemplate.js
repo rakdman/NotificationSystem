@@ -39,13 +39,21 @@ function EditEmailTemplate() {
 
   // read data
 
+  console.log("PRINTTTT");
+
+  console.log(idd);
+
   function getData() {
     axios
-      .get(`api/template/readoneemailtemplate`, { params: { idd: idd } })
+      .get(`http://localhost:9090/api/template/readoneemailtemplate`, {
+        params: { templateId: idd },
+      })
       .then((res) => {
-        console.log("This is tname from getData function:" + res.data.tname);
-        setTemplateName(res.data.tname);
-        setTemplateText(res.data.text);
+        console.log(
+          "This is tname from getData function:" + res.data.templateName
+        );
+        setTemplateName(res.data.templateName);
+        setTemplateText(res.data.templateText);
       });
   }
 
@@ -61,12 +69,16 @@ function EditEmailTemplate() {
     console.log("templateName:" + templateName);
     console.log("templateText:" + templateText);
 
-    const payload = JSON.stringify({ tname: templateName, text: templateText });
+    const payload = JSON.stringify({
+      templateName: templateName,
+      templateText: templateText,
+    });
     axios
-      .patch(`api/template/updateemailtemplate`, {
-        idd: idd,
-        tname: templateName,
-        text: templateText,
+      .put(`http://localhost:9090/api/template/updateemailtemplate`, {
+        templateId: idd,
+        templateName: templateName,
+        templateText: templateText,
+        templateType: "EMAIL",
       })
       .then((res) => {
         console.log(res.data);

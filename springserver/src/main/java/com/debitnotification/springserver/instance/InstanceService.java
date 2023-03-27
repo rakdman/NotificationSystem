@@ -1,8 +1,10 @@
 package com.debitnotification.springserver.instance;
 
+import com.debitnotification.springserver.workflow.WorkflowTemplate;
+import com.debitnotification.springserver.workflow.WorkflowTemplateRepo;
+import com.debitnotification.springserver.workflow.WorkflowTemplateStep;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -17,16 +19,23 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class InstanceService {
-    InstanceRepo instanceRepo;
-    @Value("${data.customer.filename}")
-    private String fileName;
 
-    public InstanceService(InstanceRepo instanceRepo) {
+    @Value("${data.customer.filename}")
+    String fileName;
+
+    @Value("${data.customer.paymentfilename}")
+    String paymentFileName;
+    InstanceRepo instanceRepo;
+    WorkflowTemplateRepo workflowTemplateRepo;
+
+
+    public InstanceService(InstanceRepo instanceRepo, WorkflowTemplateRepo workflowTemplateRepo) {
         this.instanceRepo = instanceRepo;
+        this.workflowTemplateRepo = workflowTemplateRepo;
     }
 
 
-    public void loadfile() throws IOException {
+    public void loadDataFile() throws IOException {
         ClassPathResource classPathResource = new ClassPathResource(fileName);
         File file = classPathResource.getFile();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -34,6 +43,68 @@ public class InstanceService {
         };
         List<Instance> listOfCustomer = objectMapper.readValue(file, typeListOfCustomer);
         instanceRepo.saveAll(listOfCustomer);
+
+        for (Instance customer : listOfCustomer) {
+            processCustomerData(customer);
+        }
+
+    }
+
+    private void processCustomerData(Instance customer) {
+        String workflowName = customer.getWorkflowName();
+        WorkflowTemplate workflowDefinition = workflowTemplateRepo.findByWorkflowTemplateName(workflowName);
+
+        List<WorkflowStep> listOfInstanceWorkflowStep = new ArrayList<>();
+        if (workflowName.equals(workflowDefinition.getWorkflowTemplateName())) {
+            List<WorkflowTemplateStep> workflowTemplateStep = workflowDefinition.getWorkflowTemplateStep();
+
+            WorkflowStep workflowStep;
+            for (WorkflowTemplateStep step : workflowTemplateStep) {
+                workflowStep = new WorkflowStep();
+                workflowStep.setStepName(step.getWorkflowTemplateStepName());
+                workflowStep.setStepStatus("pending");
+                long time = 24 * 60 * 60 * 1000 * step.getWorkflowTemplateStepWait();
+                workflowStep.setStepScheduleDate(new Date(new Date().getTime() + time));
+//                workflowStep.setInstance(customer);
+                listOfInstanceWorkflowStep.add(workflowStep);
+            }
+            customer.setWorkflowStep(listOfInstanceWorkflowStep);
+            customer.setInstanceStatus("inprogress");
+            instanceRepo.save(customer);
+        }
+
+    }
+
+    public void loadPaymentFile() throws IOException {
+        ClassPathResource classPathResource = new ClassPathResource(paymentFileName);
+        File file = classPathResource.getFile();
+        ObjectMapper objectMapper = new ObjectMapper();
+        TypeReference<List<Payment>> listOfPayment = new TypeReference<List<Payment>>() {
+        };
+        List<Payment> customerPayments = objectMapper.readValue(file, listOfPayment);
+
+        for (Payment payment : customerPayments) {
+            processCustomerPayment(payment);
+        }
+    }
+
+    private void processCustomerPayment(Payment payment) {
+        Instance customerInstance = instanceRepo.findByBillId(payment.getBillId());
+        if (payment != null) {
+            double updatedOpenAmount = customerInstance.getOpenAmount() - Double.parseDouble(payment.getPaymentAmount());
+            customerInstance.setOpenAmount(updatedOpenAmount);
+        }
+
+        if (customerInstance.getOpenAmount() <= 0
+                && customerInstance.getInstanceStatus().equalsIgnoreCase("inprogress")) {
+            customerInstance.setInstanceStatus("ended");
+            customerInstance.setOpenAmount(0);
+
+            for (WorkflowStep step : customerInstance.getWorkflowStep()) {
+                step.setStepStatus("ended");
+            }
+        }
+        instanceRepo.save(customerInstance);
     }
 
     public List<Instance> getAllInstances() {
@@ -63,6 +134,10 @@ public class InstanceService {
         instanceList.sort((instance1, instance2) -> instance2.getEntryDate().compareTo(instance1.getEntryDate()));
 
         return instanceList;
+    }
+
+    public Instance getInstancesById(Integer instanceId) {
+        return instanceRepo.getById(instanceId.longValue());
     }
 }
 

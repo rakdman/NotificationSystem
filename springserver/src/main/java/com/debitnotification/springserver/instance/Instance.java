@@ -23,7 +23,8 @@ public class Instance {
     String emailId;
     String workflowId;
     String workflowName;
-    @OneToMany(mappedBy = "stepId")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn
     List<WorkflowStep> workflowStep;
     String instanceStatus;
     String allowedRoles;
