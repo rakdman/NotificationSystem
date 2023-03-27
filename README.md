@@ -1,6 +1,6 @@
-### DebtNotificationSystem
+### DebtNotificationSystem    UNDER DEVELOPMENT
 
-This web application project is developed to send email reminders to the customers based on customer data loaded in the database who have not paid the bills and based on preconfigured business worklfows (i.e. after how many days each email reminder to be sent until payment is recieved).
+This web application project is developed to send email reminders to the customers based on customer data loaded in the database, who have not paid the bills and based on preconfigured business worklfows (i.e. after how many days each email reminder to be sent until payment is recieved).
 
 If a payment is received after loading a payment file then it will finish the worklfow instance of the customer.
 
@@ -9,15 +9,7 @@ If a payment is received after loading a payment file then it will finish the wo
   SpringBoot - Backend
   Postresql- Database
   
-### The web application is available on Heroku free account
-
-URL:https://debit-management-system.herokuapp.com/
-
-Username:rakdman
-
-Password:dhiman
-
-Note: Since it is on free account, it may take a minute to load the web page for the first time.
+Note: I have developed the application using NodeJS and Express earlier. Now the backend is being migrated to SpringBoot. 
 
 ### Screenshots:
 
