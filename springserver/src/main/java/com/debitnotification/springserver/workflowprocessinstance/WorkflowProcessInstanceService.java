@@ -1,8 +1,8 @@
 package com.debitnotification.springserver.instance;
 
-import com.debitnotification.springserver.workflow.WorkflowTemplate;
-import com.debitnotification.springserver.workflow.WorkflowTemplateRepo;
-import com.debitnotification.springserver.workflow.WorkflowTemplateStep;
+import com.debitnotification.springserver.workflowdefinition.WorkflowDefinition;
+import com.debitnotification.springserver.workflowdefinition.WorkflowDefinitionRepo;
+import com.debitnotification.springserver.workflowdefinition.WorkflowDefinitionStep;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -26,12 +26,12 @@ public class InstanceService {
     @Value("${data.customer.paymentfilename}")
     String paymentFileName;
     InstanceRepo instanceRepo;
-    WorkflowTemplateRepo workflowTemplateRepo;
+    WorkflowDefinitionRepo workflowDefinitionRepo;
 
 
-    public InstanceService(InstanceRepo instanceRepo, WorkflowTemplateRepo workflowTemplateRepo) {
+    public InstanceService(InstanceRepo instanceRepo, WorkflowDefinitionRepo workflowDefinitionRepo) {
         this.instanceRepo = instanceRepo;
-        this.workflowTemplateRepo = workflowTemplateRepo;
+        this.workflowDefinitionRepo = workflowDefinitionRepo;
     }
 
 
@@ -52,14 +52,14 @@ public class InstanceService {
 
     private void processCustomerData(Instance customer) {
         String workflowName = customer.getWorkflowName();
-        WorkflowTemplate workflowDefinition = workflowTemplateRepo.findByWorkflowTemplateName(workflowName);
+        WorkflowDefinition workflowDefinition = workflowDefinitionRepo.findByWorkflowTemplateName(workflowName);
 
         List<WorkflowStep> listOfInstanceWorkflowStep = new ArrayList<>();
         if (workflowName.equals(workflowDefinition.getWorkflowTemplateName())) {
-            List<WorkflowTemplateStep> workflowTemplateStep = workflowDefinition.getWorkflowTemplateStep();
+            List<WorkflowDefinitionStep> workflowDefinitionStep = workflowDefinition.getWorkflowDefinitionStep();
 
             WorkflowStep workflowStep;
-            for (WorkflowTemplateStep step : workflowTemplateStep) {
+            for (WorkflowDefinitionStep step : workflowDefinitionStep) {
                 workflowStep = new WorkflowStep();
                 workflowStep.setStepName(step.getWorkflowTemplateStepName());
                 workflowStep.setStepStatus("pending");

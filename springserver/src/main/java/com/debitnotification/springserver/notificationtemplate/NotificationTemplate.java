@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Template {
+public class NotificationTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long templateId;
-    private String templateName;
-    private String templateText;
-    private TemplateType templateType;
+    private long notificationTemplateId;
+    private String notificationTemplateName;
+    private String notificationTemplateText;
+    private NotificationTemplateTypeEnum notificationTemplateTypeEnum;
 
 }

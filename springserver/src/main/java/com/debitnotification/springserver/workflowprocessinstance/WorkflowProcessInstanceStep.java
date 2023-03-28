@@ -1,4 +1,4 @@
-package com.debitnotification.springserver.instance;
+package com.debitnotification.springserver.workflowprocessinstance;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
