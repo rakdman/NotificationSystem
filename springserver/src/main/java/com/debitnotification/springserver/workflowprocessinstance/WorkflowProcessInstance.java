@@ -1,10 +1,9 @@
-package com.debitnotification.springserver.instance;
+package com.debitnotification.springserver.workflowprocessinstance;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import java.util.Date;
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Instance {
+public class WorkflowProcessInstance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,11 +25,11 @@ public class Instance {
     String workflowName;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn
-    List<WorkflowStep> workflowStep;
-    String instanceStatus;
+    List<WorkflowProcessInstanceStep> workflowProcessInstanceStep;
+    InstanceStatusEnum instanceStatus;
     String allowedRoles;
     Date entryDate = new Date();
-    
+
     String billId;
     double openAmount;
 

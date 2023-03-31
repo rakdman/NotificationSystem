@@ -1,6 +1,7 @@
 package com.debitnotification.springserver.user;
 
 import com.debitnotification.springserver.UserRole;
+import com.debitnotification.springserver.configuration.user.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;

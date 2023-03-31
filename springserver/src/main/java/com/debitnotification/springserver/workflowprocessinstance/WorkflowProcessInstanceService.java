@@ -1,4 +1,4 @@
-package com.debitnotification.springserver.instance;
+package com.debitnotification.springserver.workflowprocessinstance;
 
 import com.debitnotification.springserver.workflowdefinition.WorkflowDefinition;
 import com.debitnotification.springserver.workflowdefinition.WorkflowDefinitionRepo;
@@ -18,19 +18,19 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class InstanceService {
+public class WorkflowProcessInstanceService {
 
     @Value("${data.customer.filename}")
     String fileName;
 
     @Value("${data.customer.paymentfilename}")
     String paymentFileName;
-    InstanceRepo instanceRepo;
+    WorkflowProcessInstanceRepo workflowProcessInstanceRepo;
     WorkflowDefinitionRepo workflowDefinitionRepo;
 
 
-    public InstanceService(InstanceRepo instanceRepo, WorkflowDefinitionRepo workflowDefinitionRepo) {
-        this.instanceRepo = instanceRepo;
+    public WorkflowProcessInstanceService(WorkflowProcessInstanceRepo workflowProcessInstanceRepo, WorkflowDefinitionRepo workflowDefinitionRepo) {
+        this.workflowProcessInstanceRepo = workflowProcessInstanceRepo;
         this.workflowDefinitionRepo = workflowDefinitionRepo;
     }
 
@@ -39,105 +39,112 @@ public class InstanceService {
         ClassPathResource classPathResource = new ClassPathResource(fileName);
         File file = classPathResource.getFile();
         ObjectMapper objectMapper = new ObjectMapper();
-        TypeReference<List<Instance>> typeListOfCustomer = new TypeReference<List<Instance>>() {
+        TypeReference<List<WorkflowProcessInstance>> typeListOfCustomer = new TypeReference<List<WorkflowProcessInstance>>() {
         };
-        List<Instance> listOfCustomer = objectMapper.readValue(file, typeListOfCustomer);
-        instanceRepo.saveAll(listOfCustomer);
+        List<WorkflowProcessInstance> listOfCustomer = objectMapper.readValue(file, typeListOfCustomer);
+        workflowProcessInstanceRepo.saveAll(listOfCustomer);
 
-        for (Instance customer : listOfCustomer) {
+        for (WorkflowProcessInstance customer : listOfCustomer) {
             processCustomerData(customer);
         }
 
     }
 
-    private void processCustomerData(Instance customer) {
+    private void processCustomerData(WorkflowProcessInstance customer) {
+        List<WorkflowProcessInstanceStep> listOfInstanceWorkflowProcessInstanceStep = new ArrayList<>();
+
         String workflowName = customer.getWorkflowName();
-        WorkflowDefinition workflowDefinition = workflowDefinitionRepo.findByWorkflowTemplateName(workflowName);
+        Optional<WorkflowDefinition> workflowDefinition = workflowDefinitionRepo.findByWorkflowTemplateName(workflowName);
 
-        List<WorkflowStep> listOfInstanceWorkflowStep = new ArrayList<>();
-        if (workflowName.equals(workflowDefinition.getWorkflowTemplateName())) {
-            List<WorkflowDefinitionStep> workflowDefinitionStep = workflowDefinition.getWorkflowDefinitionStep();
+        Optional<List<WorkflowDefinitionStep>> workflowDefinitionSteps = workflowDefinition.map(WorkflowDefinition::getWorkflowDefinitionStep);
 
-            WorkflowStep workflowStep;
-            for (WorkflowDefinitionStep step : workflowDefinitionStep) {
-                workflowStep = new WorkflowStep();
-                workflowStep.setStepName(step.getWorkflowTemplateStepName());
-                workflowStep.setStepStatus("pending");
-                long time = 24 * 60 * 60 * 1000 * step.getWorkflowTemplateStepWait();
-                workflowStep.setStepScheduleDate(new Date(new Date().getTime() + time));
-//                workflowStep.setInstance(customer);
-                listOfInstanceWorkflowStep.add(workflowStep);
-            }
-            customer.setWorkflowStep(listOfInstanceWorkflowStep);
-            customer.setInstanceStatus("inprogress");
-            instanceRepo.save(customer);
+
+        if (workflowDefinitionSteps.isPresent()) {
+            scheduleWorkflowInstanceSteps(listOfInstanceWorkflowProcessInstanceStep, workflowDefinitionSteps);
         }
 
+        customer.setWorkflowProcessInstanceStep(listOfInstanceWorkflowProcessInstanceStep);
+        customer.setInstanceStatus(InstanceStatusEnum.LOADED);
+        workflowProcessInstanceRepo.save(customer);
+
     }
+
+    private void scheduleWorkflowInstanceSteps(List<WorkflowProcessInstanceStep> listOfInstanceWorkflowProcessInstanceStep, Optional<List<WorkflowDefinitionStep>> workflowDefinitionSteps) {
+        WorkflowProcessInstanceStep workflowProcessInstanceStep;
+        for (WorkflowDefinitionStep step : workflowDefinitionSteps.get()) {
+            workflowProcessInstanceStep = new WorkflowProcessInstanceStep();
+            workflowProcessInstanceStep.setStepName(step.getWorkflowTemplateStepName());
+            workflowProcessInstanceStep.setStepStatus(InstanceStepStatusEnum.PENDING);
+            long time = 24 * 60 * 60 * 1000 * step.getWorkflowTemplateStepWait();
+            workflowProcessInstanceStep.setStepScheduleDate(new Date(new Date().getTime() + time));
+            listOfInstanceWorkflowProcessInstanceStep.add(workflowProcessInstanceStep);
+        }
+    }
+
 
     public void loadPaymentFile() throws IOException {
         ClassPathResource classPathResource = new ClassPathResource(paymentFileName);
         File file = classPathResource.getFile();
         ObjectMapper objectMapper = new ObjectMapper();
-        TypeReference<List<Payment>> listOfPayment = new TypeReference<List<Payment>>() {
+        TypeReference<List<BillPayment>> listOfPayment = new TypeReference<List<BillPayment>>() {
         };
-        List<Payment> customerPayments = objectMapper.readValue(file, listOfPayment);
+        List<BillPayment> customerBillPayments = objectMapper.readValue(file, listOfPayment);
 
-        for (Payment payment : customerPayments) {
-            processCustomerPayment(payment);
+        for (BillPayment billPayment : customerBillPayments) {
+            processCustomerPayment(billPayment);
         }
     }
 
-    private void processCustomerPayment(Payment payment) {
-        Instance customerInstance = instanceRepo.findByBillId(payment.getBillId());
-        if (payment != null) {
-            double updatedOpenAmount = customerInstance.getOpenAmount() - Double.parseDouble(payment.getPaymentAmount());
-            customerInstance.setOpenAmount(updatedOpenAmount);
+    private void processCustomerPayment(BillPayment billPayment) {
+        WorkflowProcessInstance customerWorkflowProcessInstance = workflowProcessInstanceRepo.findByBillId(billPayment.getBillId());
+        if (billPayment != null) {
+            double updatedOpenAmount = customerWorkflowProcessInstance.getOpenAmount() - Double.parseDouble(billPayment.getPaymentAmount());
+            customerWorkflowProcessInstance.setOpenAmount(updatedOpenAmount);
         }
 
-        if (customerInstance.getOpenAmount() <= 0
-                && customerInstance.getInstanceStatus().equalsIgnoreCase("inprogress")) {
-            customerInstance.setInstanceStatus("ended");
-            customerInstance.setOpenAmount(0);
+        if (customerWorkflowProcessInstance.getOpenAmount() <= 0
+                && customerWorkflowProcessInstance.getInstanceStatus().equals(InstanceStatusEnum.INPROGRESS)) {
+            customerWorkflowProcessInstance.setInstanceStatus(InstanceStatusEnum.FINISHED);
+            customerWorkflowProcessInstance.setOpenAmount(0);
 
-            for (WorkflowStep step : customerInstance.getWorkflowStep()) {
-                step.setStepStatus("ended");
+            for (WorkflowProcessInstanceStep step : customerWorkflowProcessInstance.getWorkflowProcessInstanceStep()) {
+                step.setStepStatus(InstanceStepStatusEnum.COMPLETED);
             }
         }
-        instanceRepo.save(customerInstance);
+        workflowProcessInstanceRepo.save(customerWorkflowProcessInstance);
     }
 
-    public List<Instance> getAllInstances() {
-        List<Instance> intanceList = instanceRepo.findAll();
+    public List<WorkflowProcessInstance> getAllInstances() {
+        List<WorkflowProcessInstance> intanceList = workflowProcessInstanceRepo.findAll();
         intanceList.sort((instance1, instance2) -> instance2.getEntryDate().compareTo(instance1.getEntryDate()));
         return intanceList;
     }
 
-    public List<Instance> getInstancesByParameters(String firstName, String lastName, String contactNo, String emailId) {
-        List<Instance> instanceList = instanceRepo.findAll();
+    public List<WorkflowProcessInstance> getInstancesByParameters(String firstName, String lastName, String contactNo, String emailId) {
+        List<WorkflowProcessInstance> workflowProcessInstanceList = workflowProcessInstanceRepo.findAll();
 
         if (firstName != null && !firstName.isEmpty())
-            instanceList = instanceList.parallelStream().filter(a -> a.getFirstName().equalsIgnoreCase(firstName))
+            workflowProcessInstanceList = workflowProcessInstanceList.parallelStream().filter(a -> a.getFirstName().equalsIgnoreCase(firstName))
                     .collect(Collectors.toList());
         if (lastName != null && !lastName.isEmpty())
-            instanceList = instanceList.parallelStream().filter(a -> a.getLastName().equalsIgnoreCase(lastName))
+            workflowProcessInstanceList = workflowProcessInstanceList.parallelStream().filter(a -> a.getLastName().equalsIgnoreCase(lastName))
                     .collect(Collectors.toList());
 
         if (contactNo != null && !contactNo.isEmpty())
-            instanceList = instanceList.parallelStream().filter(a -> a.getContactNo().equalsIgnoreCase(contactNo))
+            workflowProcessInstanceList = workflowProcessInstanceList.parallelStream().filter(a -> a.getContactNo().equalsIgnoreCase(contactNo))
                     .collect(Collectors.toList());
 
         if (emailId != null && !emailId.isEmpty())
-            instanceList = instanceList.parallelStream().filter(a -> a.getEmailId().equalsIgnoreCase(emailId))
+            workflowProcessInstanceList = workflowProcessInstanceList.parallelStream().filter(a -> a.getEmailId().equalsIgnoreCase(emailId))
                     .collect(Collectors.toList());
 
-        instanceList.sort((instance1, instance2) -> instance2.getEntryDate().compareTo(instance1.getEntryDate()));
+        workflowProcessInstanceList.sort((instance1, instance2) -> instance2.getEntryDate().compareTo(instance1.getEntryDate()));
 
-        return instanceList;
+        return workflowProcessInstanceList;
     }
 
-    public Instance getInstancesById(Integer instanceId) {
-        return instanceRepo.getById(instanceId.longValue());
+    public WorkflowProcessInstance getInstancesById(Integer instanceId) {
+        return workflowProcessInstanceRepo.getById(instanceId.longValue());
     }
 }
 

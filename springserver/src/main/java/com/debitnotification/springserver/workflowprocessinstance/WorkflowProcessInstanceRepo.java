@@ -1,8 +1,8 @@
-package com.debitnotification.springserver.instance;
+package com.debitnotification.springserver.workflowprocessinstance;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface InstanceRepo extends JpaRepository<Instance, Long> {
+public interface WorkflowProcessInstanceRepo extends JpaRepository<WorkflowProcessInstance, Long> {
 
-    Instance findByBillId(String billId);
+    WorkflowProcessInstance findByBillId(String billId);
 }

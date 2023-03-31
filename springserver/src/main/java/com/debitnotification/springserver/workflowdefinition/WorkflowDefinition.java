@@ -1,4 +1,4 @@
-package com.debitnotification.springserver.workflow;
+package com.debitnotification.springserver.workflowdefinition;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -12,15 +12,15 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class WorkflowTemplate {
+public class WorkflowDefinition {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long workflowTemplateId;
     private String workflowTemplateName;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "workflowTemplate", cascade = CascadeType.ALL)
-    private List<WorkflowTemplateStep> workflowTemplateStep;
+    @OneToMany(mappedBy = "workflowDefinition", cascade = CascadeType.ALL)
+    private List<WorkflowDefinitionStep> workflowDefinitionStep;
 
 
 }

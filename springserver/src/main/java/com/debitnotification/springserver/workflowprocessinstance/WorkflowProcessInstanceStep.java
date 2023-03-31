@@ -12,13 +12,13 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WorkflowStep {
+public class WorkflowProcessInstanceStep {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long stepId;
     private String stepName;
     private Date stepScheduleDate;
-    private String stepStatus;
+    private InstanceStepStatusEnum stepStatus;
     private Date executionDate;
 
 

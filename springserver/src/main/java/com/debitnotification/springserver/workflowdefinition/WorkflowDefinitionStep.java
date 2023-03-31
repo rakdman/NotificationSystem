@@ -1,8 +1,9 @@
-package com.debitnotification.springserver.workflow;
+package com.debitnotification.springserver.workflowdefinition;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class WorkflowTemplateStep {
+public class WorkflowDefinitionStep {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long workflowTemplateStepId;
@@ -18,7 +19,7 @@ public class WorkflowTemplateStep {
     private int workflowTemplateStepWait;
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "wfTemplateId", referencedColumnName = "workflowTemplateId")
-    private WorkflowTemplate workflowTemplate;
+    @JoinColumn(name = "workflowTemplateId", referencedColumnName = "workflowTemplateId")
+    private WorkflowDefinition workflowDefinition;
 
 }

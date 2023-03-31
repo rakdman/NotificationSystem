@@ -1,4 +1,4 @@
-package com.debitnotification.springserver.template;
+package com.debitnotification.springserver.notificationtemplate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,6 +18,6 @@ public class NotificationTemplate {
     private long notificationTemplateId;
     private String notificationTemplateName;
     private String notificationTemplateText;
-    private NotificationTemplateTypeEnum notificationTemplateTypeEnum;
+    private NotificationTemplateType notificationTemplateType;
 
 }

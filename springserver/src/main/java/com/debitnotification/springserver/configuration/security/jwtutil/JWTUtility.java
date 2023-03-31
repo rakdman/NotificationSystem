@@ -1,4 +1,4 @@
-package com.debitnotification.springserver.security.jwtutil;
+package com.debitnotification.springserver.configuration.security.jwtutil;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

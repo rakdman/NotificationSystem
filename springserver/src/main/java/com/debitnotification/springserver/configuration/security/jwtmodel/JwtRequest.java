@@ -1,10 +1,9 @@
-package com.debitnotification.springserver.security.model;
+package com.debitnotification.springserver.configuration.security.jwtmodel;
 
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor

@@ -1,4 +1,4 @@
-package com.debitnotification.springserver.template;
+package com.debitnotification.springserver.notificationtemplate;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,9 +19,9 @@ public class NotificationTemplateService {
         return notificationTemplate;
     }
 
-    public List<NotificationTemplate> getAllTemplates(NotificationTemplateTypeEnum notificationTemplateTypeEnum) {
-        if (notificationTemplateTypeEnum != null)
-            return notificationTemplateRepo.findByTemplateType(notificationTemplateTypeEnum);
+    public List<NotificationTemplate> getAllTemplates(NotificationTemplateType notificationTemplateType) {
+        if (notificationTemplateType != null)
+            return notificationTemplateRepo.findByNotificationTemplateType(notificationTemplateType);
 
         return notificationTemplateRepo.findAll();
     }

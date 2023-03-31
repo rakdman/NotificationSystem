@@ -1,4 +1,4 @@
-package com.debitnotification.springserver.user;
+package com.debitnotification.springserver.configuration.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,10 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
-
 @EnableWebSecurity
 public class CustomSecurity extends WebSecurityConfiguration {
-
 
 
     protected void configure(HttpSecurity http) throws Exception {

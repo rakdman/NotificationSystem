@@ -1,4 +1,4 @@
-package com.debitnotification.springserver.user;
+package com.debitnotification.springserver.configuration.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

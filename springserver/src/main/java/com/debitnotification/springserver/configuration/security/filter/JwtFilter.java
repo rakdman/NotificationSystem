@@ -1,10 +1,10 @@
-package com.debitnotification.springserver.security.filter;
+package com.debitnotification.springserver.configuration.security.filter;
 
 import java.io.IOException;
 
 
-import com.debitnotification.springserver.security.jwtutil.JWTUtility;
-import com.debitnotification.springserver.user.UserService;
+import com.debitnotification.springserver.configuration.security.jwtutil.JWTUtility;
+import com.debitnotification.springserver.configuration.user.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

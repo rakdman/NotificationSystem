@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class Payment {
+public class BillPayment {
     private String billId;
     private String paymentAmount;
 

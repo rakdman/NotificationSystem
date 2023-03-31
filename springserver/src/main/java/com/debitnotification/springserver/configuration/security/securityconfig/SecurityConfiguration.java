@@ -1,8 +1,8 @@
-package com.debitnotification.springserver.security.config;
+package com.debitnotification.springserver.configuration.security.securityconfig;
 
 
-import com.debitnotification.springserver.security.filter.JwtFilter;
-import com.debitnotification.springserver.user.UserService;
+import com.debitnotification.springserver.configuration.security.filter.JwtFilter;
+import com.debitnotification.springserver.configuration.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
 @EnableWebSecurity

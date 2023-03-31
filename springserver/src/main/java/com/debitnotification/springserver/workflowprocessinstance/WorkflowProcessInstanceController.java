@@ -1,4 +1,4 @@
-package com.debitnotification.springserver.instance;
+package com.debitnotification.springserver.workflowprocessinstance;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,35 +14,35 @@ import java.util.List;
 @CrossOrigin
 @Slf4j
 @AllArgsConstructor
-public class InstanceController {
+public class WorkflowProcessInstanceController {
 
-    InstanceService instanceService;
+    WorkflowProcessInstanceService workflowProcessInstanceService;
 
 
     @GetMapping("/readallinstances")
-    public ResponseEntity<List<Instance>> readAllInstances() {
-        return ResponseEntity.ok(instanceService.getAllInstances());
+    public ResponseEntity<List<WorkflowProcessInstance>> readAllInstances() {
+        return ResponseEntity.ok(workflowProcessInstanceService.getAllInstances());
     }
 
     @GetMapping(value = "/readoneinstancesbyparams", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Instance>> readInstances(@RequestParam(required = false) String firstName, @RequestParam(required = false) String lastName, @RequestParam(required = false) String contactNo, @RequestParam(required = false) String emailId) {
-        return ResponseEntity.ok(instanceService.getInstancesByParameters(firstName, lastName, contactNo, emailId));
+    public ResponseEntity<List<WorkflowProcessInstance>> readInstances(@RequestParam(required = false) String firstName, @RequestParam(required = false) String lastName, @RequestParam(required = false) String contactNo, @RequestParam(required = false) String emailId) {
+        return ResponseEntity.ok(workflowProcessInstanceService.getInstancesByParameters(firstName, lastName, contactNo, emailId));
     }
 
     @GetMapping(value = "/readoneinstancebyid", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Instance> readInstanceById(@RequestParam Integer instanceId) {
-        return ResponseEntity.ok(instanceService.getInstancesById(instanceId));
+    public ResponseEntity<WorkflowProcessInstance> readInstanceById(@RequestParam Integer instanceId) {
+        return ResponseEntity.ok(workflowProcessInstanceService.getInstancesById(instanceId));
     }
 
 
     @PostMapping("/loadfile")
     public void loadFile() throws IOException {
-        instanceService.loadDataFile();
+        workflowProcessInstanceService.loadDataFile();
     }
 
     @PostMapping("/loadpaymentfile")
     public void loadPaymentFile() throws IOException {
-        instanceService.loadPaymentFile();
+        workflowProcessInstanceService.loadPaymentFile();
     }
 
 }

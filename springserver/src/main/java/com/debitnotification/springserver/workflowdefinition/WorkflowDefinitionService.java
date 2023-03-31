@@ -1,4 +1,4 @@
-package com.debitnotification.springserver.workflow;
+package com.debitnotification.springserver.workflowdefinition;
 
 import org.springframework.stereotype.Service;
 
@@ -6,36 +6,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class WorkflowTemplateService {
-    private final WorkflowTemplateRepo workflowTemplateRepo;
+public class WorkflowDefinitionService {
+    private final WorkflowDefinitionRepo workflowDefinitionRepo;
 
-    public WorkflowTemplateService(WorkflowTemplateRepo workflowTemplateRepo) {
-        this.workflowTemplateRepo = workflowTemplateRepo;
+    public WorkflowDefinitionService(WorkflowDefinitionRepo workflowDefinitionRepo) {
+        this.workflowDefinitionRepo = workflowDefinitionRepo;
     }
 
-    public WorkflowTemplate createTemplate(WorkflowTemplate templateRequest) {
-        WorkflowTemplate workflowTemplate = new WorkflowTemplate();
-        workflowTemplate.setWorkflowTemplateName(templateRequest.getWorkflowTemplateName());
-        workflowTemplateRepo.save(templateRequest);
+    public WorkflowDefinition createTemplate(WorkflowDefinition templateRequest) {
+        WorkflowDefinition workflowDefinition = new WorkflowDefinition();
+        workflowDefinition.setWorkflowTemplateName(templateRequest.getWorkflowTemplateName());
+        workflowDefinitionRepo.save(templateRequest);
 
-        WorkflowTemplate workflowTemplateUpdated = workflowTemplateRepo.findById(templateRequest.getWorkflowTemplateId()).get();
+        WorkflowDefinition workflowDefinitionUpdated = workflowDefinitionRepo.findById(templateRequest.getWorkflowTemplateId()).get();
 
-        List<WorkflowTemplateStep> workflowTemplateStep = new ArrayList<>();
-        for (WorkflowTemplateStep step : templateRequest.getWorkflowTemplateStep()) {
-            step.setWorkflowTemplate(workflowTemplateUpdated);
+        List<WorkflowDefinitionStep> workflowDefinitionStep = new ArrayList<>();
+        for (WorkflowDefinitionStep step : templateRequest.getWorkflowDefinitionStep()) {
+            step.setWorkflowDefinition(workflowDefinitionUpdated);
         }
 
-        workflowTemplateUpdated.setWorkflowTemplateStep(workflowTemplateStep);
-        workflowTemplateRepo.save(workflowTemplateUpdated);
-        return workflowTemplateUpdated;
+        workflowDefinitionUpdated.setWorkflowDefinitionStep(workflowDefinitionStep);
+        workflowDefinitionRepo.save(workflowDefinitionUpdated);
+        return workflowDefinitionUpdated;
     }
 
 
-    public List<WorkflowTemplate> getAllTemplates() {
-        return workflowTemplateRepo.findAll();
+    public List<WorkflowDefinition> getAllTemplates() {
+        return workflowDefinitionRepo.findAll();
     }
 
-    public WorkflowTemplate getOneTemplate(long workflowTemplateId) {
-        return workflowTemplateRepo.findByWorkflowTemplateId(workflowTemplateId);
+    public WorkflowDefinition getOneTemplate(long workflowTemplateId) {
+        return workflowDefinitionRepo.findByWorkflowTemplateId(workflowTemplateId);
     }
 }

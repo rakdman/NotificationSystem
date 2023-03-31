@@ -1,4 +1,4 @@
-package com.debitnotification.springserver.workflow;
+package com.debitnotification.springserver.workflowdefinition;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -11,22 +11,22 @@ import java.util.List;
 @AllArgsConstructor
 @CrossOrigin("http://localhost:3000/")
 @RequestMapping("/api/workflow")
-public class WorkflowTemplateController {
-    private final WorkflowTemplateService workflowTemplateService;
+public class WorkflowDefinitionController {
+    private final WorkflowDefinitionService workflowDefinitionService;
 
     @PostMapping("/create")
-    public ResponseEntity<WorkflowTemplate> createTemplate(@RequestBody WorkflowTemplate workflowTemplate) {
-        return ResponseEntity.ok(workflowTemplateService.createTemplate(workflowTemplate));
+    public ResponseEntity<WorkflowDefinition> createTemplate(@RequestBody WorkflowDefinition workflowDefinition) {
+        return ResponseEntity.ok(workflowDefinitionService.createTemplate(workflowDefinition));
     }
 
     @GetMapping(value = "/readallwftemplate", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<WorkflowTemplate>> findAllTemplates() {
-        return ResponseEntity.ok(workflowTemplateService.getAllTemplates());
+    public ResponseEntity<List<WorkflowDefinition>> findAllTemplates() {
+        return ResponseEntity.ok(workflowDefinitionService.getAllTemplates());
     }
 
 
     @GetMapping(value = "/readoneWFtemplate", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WorkflowTemplate> findOneWorkflowTemplate(@RequestParam long workflowTemplateId) {
-        return ResponseEntity.ok(workflowTemplateService.getOneTemplate(workflowTemplateId));
+    public ResponseEntity<WorkflowDefinition> findOneWorkflowTemplate(@RequestParam long workflowTemplateId) {
+        return ResponseEntity.ok(workflowDefinitionService.getOneTemplate(workflowTemplateId));
     }
 }

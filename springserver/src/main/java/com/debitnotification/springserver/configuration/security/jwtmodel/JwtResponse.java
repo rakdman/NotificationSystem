@@ -1,4 +1,4 @@
-package com.debitnotification.springserver.security.model;
+package com.debitnotification.springserver.configuration.security.jwtmodel;
 
 import com.debitnotification.springserver.UserRole;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JwtResponse {
-	private String token;
-	private UserRole role;
+    private String token;
+    private UserRole role;
 
 }

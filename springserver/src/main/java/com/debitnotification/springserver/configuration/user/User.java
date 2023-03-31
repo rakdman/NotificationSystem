@@ -1,4 +1,4 @@
-package com.debitnotification.springserver.user;
+package com.debitnotification.springserver.configuration.user;
 
 import com.debitnotification.springserver.UserRole;
 import jakarta.persistence.*;

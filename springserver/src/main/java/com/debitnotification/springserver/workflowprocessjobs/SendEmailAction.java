@@ -1,4 +1,4 @@
-package com.debitnotification.springserver.process;
+package com.debitnotification.springserver.workflowprocessjobs;
 
 import com.debitnotification.springserver.workflowprocessinstance.WorkflowProcessInstance;
 import com.debitnotification.springserver.workflowprocessinstance.WorkflowProcessInstanceStep;

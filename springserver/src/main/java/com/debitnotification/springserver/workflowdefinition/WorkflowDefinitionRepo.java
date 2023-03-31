@@ -1,12 +1,12 @@
-package com.debitnotification.springserver.workflow;
+package com.debitnotification.springserver.workflowdefinition;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.Optional;
 
-public interface WorkflowTemplateRepo extends JpaRepository<WorkflowTemplate, Long> {
+public interface WorkflowDefinitionRepo extends JpaRepository<WorkflowDefinition, Long> {
 
-    public WorkflowTemplate findByWorkflowTemplateId(long workflowTemplateId);
+    public WorkflowDefinition findByWorkflowTemplateId(long workflowTemplateId);
 
-    public WorkflowTemplate findByWorkflowTemplateName(String workflowTemplateName);
+    public Optional<WorkflowDefinition> findByWorkflowTemplateName(String workflowTemplateName);
 }

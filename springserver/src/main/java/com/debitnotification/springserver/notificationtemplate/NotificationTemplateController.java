@@ -1,4 +1,4 @@
-package com.debitnotification.springserver.template;
+package com.debitnotification.springserver.notificationtemplate;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +19,8 @@ public class NotificationTemplateController {
     }
 
     @GetMapping("/emailtemplates")
-    public ResponseEntity<List<NotificationTemplate>> findAllTemplates(@RequestParam(required = false) NotificationTemplateTypeEnum notificationTemplateTypeEnum) {
-        return ResponseEntity.ok(notificationTemplateService.getAllTemplates(notificationTemplateTypeEnum));
+    public ResponseEntity<List<NotificationTemplate>> findAllTemplates(@RequestParam(required = false) NotificationTemplateType notificationTemplateType) {
+        return ResponseEntity.ok(notificationTemplateService.getAllTemplates(notificationTemplateType));
     }
 
 

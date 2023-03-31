@@ -1,7 +1,7 @@
-package com.debitnotification.springserver.user;
+package com.debitnotification.springserver.configuration.user;
 
-import com.debitnotification.springserver.security.model.JwtRequest;
-import com.debitnotification.springserver.security.model.JwtResponse;
+import com.debitnotification.springserver.configuration.security.jwtmodel.JwtRequest;
+import com.debitnotification.springserver.configuration.security.jwtmodel.JwtResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
