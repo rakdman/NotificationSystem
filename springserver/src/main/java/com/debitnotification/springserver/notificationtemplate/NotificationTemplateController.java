@@ -18,6 +18,12 @@ public class NotificationTemplateController {
         return ResponseEntity.ok(notificationTemplateService.createTemplate(notificationTemplate));
     }
 
+    @PutMapping("/updateemailtemplate")
+    public ResponseEntity<NotificationTemplate> updateTemplate(@RequestBody NotificationTemplate notificationTemplate) {
+        return ResponseEntity.ok(notificationTemplateService.createTemplate(notificationTemplate));
+    }
+
+
     @GetMapping("/emailtemplates")
     public ResponseEntity<List<NotificationTemplate>> findAllTemplates(@RequestParam(required = false) NotificationTemplateType notificationTemplateType) {
         return ResponseEntity.ok(notificationTemplateService.getAllTemplates(notificationTemplateType));
@@ -25,18 +31,14 @@ public class NotificationTemplateController {
 
 
     @GetMapping("/readoneemailtemplate")
-    public ResponseEntity<NotificationTemplate> findOneTemplate(@RequestParam Long templateId) {
-        return ResponseEntity.ok(notificationTemplateService.getOneTemplate(templateId));
+    public ResponseEntity<NotificationTemplate> findOneTemplate(@RequestParam Long notificationTemplateId) {
+        return ResponseEntity.ok(notificationTemplateService.getOneTemplate(notificationTemplateId));
     }
 
-    @PutMapping("/updateemailtemplate")
-    public ResponseEntity<NotificationTemplate> updateTemplate(@RequestBody NotificationTemplate notificationTemplate) {
-        return ResponseEntity.ok(notificationTemplateService.updateTemplate(notificationTemplate));
-    }
 
     @DeleteMapping("/deleteemailtemplate")
-    public ResponseEntity deleteTemplate(@RequestParam Long templateId) {
-        notificationTemplateService.deleteTemplate(templateId);
+    public ResponseEntity<Void> deleteTemplate(@RequestParam Long notificationTemplateId) {
+        notificationTemplateService.deleteTemplate(notificationTemplateId);
         return ResponseEntity.ok(null);
     }
 

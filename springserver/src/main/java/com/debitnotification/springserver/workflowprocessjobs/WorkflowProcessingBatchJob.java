@@ -18,7 +18,7 @@ public class WorkflowProcessingBatchJob {
     private final WorkflowProcessInstanceRepo workflowProcessInstanceRepo;
     private final SendEmailAction sendEmailAction;
 
-    @Scheduled(fixedRate = 3600000)
+    @Scheduled(fixedRate = 36000000)
     public void processWorkflow() {
         List<WorkflowProcessInstance> inProgressWorkflowProcessInstances = extractPendingProcessInstances();
         for (WorkflowProcessInstance workflowProcessInstance : inProgressWorkflowProcessInstances) {
@@ -30,12 +30,12 @@ public class WorkflowProcessingBatchJob {
     private WorkflowProcessInstanceStep extractProcessInstanceStep(WorkflowProcessInstance workflowProcessInstance) {
         return workflowProcessInstance.getWorkflowProcessInstanceStep()
                 .stream()
-                .filter(s -> s.getStepStatus().equals("pending")).findFirst().orElse(null);
+                .filter(s -> s.getStepStatus().equals(InstanceStepStatusEnum.PENDING)).findFirst().orElse(null);
     }
 
     private List<WorkflowProcessInstance> extractPendingProcessInstances() {
         return workflowProcessInstanceRepo.findAll().stream()
-                .filter(instance -> !instance.getInstanceStatus().equals("ended"))
+                .filter(instance -> !instance.getInstanceStatus().equals(InstanceStatusEnum.FINISHED))
                 .filter(instance -> instance.getOpenAmount() > 0).toList();
     }
 

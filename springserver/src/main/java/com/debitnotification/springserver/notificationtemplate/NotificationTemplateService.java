@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @CrossOrigin
@@ -26,13 +27,12 @@ public class NotificationTemplateService {
         return notificationTemplateRepo.findAll();
     }
 
-    public NotificationTemplate getOneTemplate(long templateId) {
-        return notificationTemplateRepo.findById(templateId).get();
-    }
-
-    public NotificationTemplate updateTemplate(NotificationTemplate notificationTemplate) {
-        notificationTemplateRepo.save(notificationTemplate);
-        return notificationTemplate;
+    public NotificationTemplate getOneTemplate(long notificationTemplateId) {
+        Optional<NotificationTemplate> notificationTemplate = notificationTemplateRepo.findById(notificationTemplateId);
+        if (notificationTemplate.isPresent()) {
+            return notificationTemplate.get();
+        }
+        return null;
     }
 
     public void deleteTemplate(Long templateId) {

@@ -54,7 +54,7 @@ function EmailTemplateView() {
 
   const fetchData = async () => {
     const response = await axios.get(apiURL, {
-      params: { templateType: "EMAIL" },
+      params: { notificationTemplateType: "EMAIL" },
     });
     setBooks(response.data);
   };
@@ -77,7 +77,7 @@ function EmailTemplateView() {
       // await axios.delete(`api/template/deleteemailtemplate`,{params:{idd:idd}}).then(
       await axios
         .delete(`http://localhost:9090/api/template/deleteemailtemplate`, {
-          params: { templateId: _id },
+          params: { notificationTemplateId: _id },
         })
         .then((res) => {
           console.log("Deletion done for idd:");
@@ -144,10 +144,17 @@ function EmailTemplateView() {
 
               {smsTemp &&
                 smsTemp.map((item, index) => {
+                  console.log(item);
                   return (
-                    <TableRow key={item.templateId}>
-                      <TableCell size="medium"> {item.templateName} </TableCell>
-                      <TableCell size="medium"> {item.templateText} </TableCell>
+                    <TableRow key={item.notificationTemplateId}>
+                      <TableCell size="medium">
+                        {" "}
+                        {item.notificationTemplateName}{" "}
+                      </TableCell>
+                      <TableCell size="medium">
+                        {" "}
+                        {item.notificationTemplateText}{" "}
+                      </TableCell>
                       <TableCell>
                         <ButtonGroup>
                           <Button
@@ -157,7 +164,7 @@ function EmailTemplateView() {
                             onClick={() => {
                               // console.log('From editRowHandler ');
                               setOpen(true);
-                              setIdd(item.templateId);
+                              setIdd(item.notificationTemplateId);
                               // console.log('It is from client EmailTemplateView: item._id:'+item._id);
                               // console.log('It is from client EmailTemplateView id:'+idd);
                             }}
@@ -181,7 +188,7 @@ function EmailTemplateView() {
                               // console.log('Indo deletion onclick ');
                               // setIdd(item._id);
                               // console.log('idd '+idd);
-                              deletion(item.templateId);
+                              deletion(item.notificationTemplateId);
                             }}
                           >
                             Delete

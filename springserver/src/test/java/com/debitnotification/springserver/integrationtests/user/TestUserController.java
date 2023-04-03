@@ -1,8 +1,9 @@
-package com.debitnotification.springserver.user;
+package com.debitnotification.springserver.integrationtests.user;
 
 import com.debitnotification.springserver.UserRole;
 import com.debitnotification.springserver.configuration.user.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -21,9 +23,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-//@Transactional
-//@Rollback(value = true)
-class UserControllerTest {
+@Transactional
+@Rollback
+class TestUserController {
 
     private static User user;
     @Autowired
@@ -33,7 +35,7 @@ class UserControllerTest {
     @BeforeAll
     static void beforeAll() {
         user = new User();
-        user.setUserName("rakdman");
+        user.setUserName("testuser");
         user.setPassword("Thinkpositive");
         user.setRole(UserRole.NORMAL);
         user.setEmail("testuser@gmail.com");
@@ -46,7 +48,7 @@ class UserControllerTest {
         String userDataAsString = om.writeValueAsString(user);
 
         MvcResult mvcResult = mockMvc.perform(
-                        post("/api/user/createuser")
+                        post("/api/user/create")
                                 .content(userDataAsString)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -54,7 +56,8 @@ class UserControllerTest {
                 .andReturn();
 
         String contentAsString = mvcResult.getResponse().getContentAsString();
-        Assertions.assertEquals(user.getUserName(), contentAsString);
+        User resultUser = om.readValue(contentAsString, User.class);
+        Assertions.assertEquals(user.getUserName(), resultUser.getUserName());
 
     }
 
@@ -64,7 +67,7 @@ class UserControllerTest {
         String userDataAsString = om.writeValueAsString(user);
 
         MvcResult mvcResult = mockMvc.perform(
-                        post("/api/user/createuser")
+                        post("/api/user/create")
                                 .content(userDataAsString)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isBadRequest())

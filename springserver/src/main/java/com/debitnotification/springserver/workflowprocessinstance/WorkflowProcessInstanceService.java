@@ -42,6 +42,7 @@ public class WorkflowProcessInstanceService {
         TypeReference<List<WorkflowProcessInstance>> typeListOfCustomer = new TypeReference<List<WorkflowProcessInstance>>() {
         };
         List<WorkflowProcessInstance> listOfCustomer = objectMapper.readValue(file, typeListOfCustomer);
+
         workflowProcessInstanceRepo.saveAll(listOfCustomer);
 
         for (WorkflowProcessInstance customer : listOfCustomer) {
@@ -56,26 +57,28 @@ public class WorkflowProcessInstanceService {
         String workflowName = customer.getWorkflowName();
         Optional<WorkflowDefinition> workflowDefinition = workflowDefinitionRepo.findByWorkflowTemplateName(workflowName);
 
-        Optional<List<WorkflowDefinitionStep>> workflowDefinitionSteps = workflowDefinition.map(WorkflowDefinition::getWorkflowDefinitionStep);
+        if (!workflowDefinition.isEmpty()) {
+            Optional<List<WorkflowDefinitionStep>> workflowDefinitionSteps = workflowDefinition.map(WorkflowDefinition::getWorkflowDefinitionStep);
 
+            if (workflowDefinitionSteps.isPresent()) {
+                scheduleWorkflowInstanceSteps(listOfInstanceWorkflowProcessInstanceStep, workflowDefinitionSteps.get());
+            }
 
-        if (workflowDefinitionSteps.isPresent()) {
-            scheduleWorkflowInstanceSteps(listOfInstanceWorkflowProcessInstanceStep, workflowDefinitionSteps);
+            customer.setWorkflowProcessInstanceStep(listOfInstanceWorkflowProcessInstanceStep);
+            customer.setInstanceStatus(InstanceStatusEnum.LOADED);
+        } else {
+            customer.setInstanceStatus(InstanceStatusEnum.ERROR);
         }
-
-        customer.setWorkflowProcessInstanceStep(listOfInstanceWorkflowProcessInstanceStep);
-        customer.setInstanceStatus(InstanceStatusEnum.LOADED);
         workflowProcessInstanceRepo.save(customer);
-
     }
 
-    private void scheduleWorkflowInstanceSteps(List<WorkflowProcessInstanceStep> listOfInstanceWorkflowProcessInstanceStep, Optional<List<WorkflowDefinitionStep>> workflowDefinitionSteps) {
+    private void scheduleWorkflowInstanceSteps(List<WorkflowProcessInstanceStep> listOfInstanceWorkflowProcessInstanceStep, List<WorkflowDefinitionStep> workflowDefinitionSteps) {
         WorkflowProcessInstanceStep workflowProcessInstanceStep;
-        for (WorkflowDefinitionStep step : workflowDefinitionSteps.get()) {
+        for (WorkflowDefinitionStep step : workflowDefinitionSteps) {
             workflowProcessInstanceStep = new WorkflowProcessInstanceStep();
             workflowProcessInstanceStep.setStepName(step.getWorkflowTemplateStepName());
             workflowProcessInstanceStep.setStepStatus(InstanceStepStatusEnum.PENDING);
-            long time = 24 * 60 * 60 * 1000 * step.getWorkflowTemplateStepWait();
+            long time = (long) 24 * 60 * 60 * 1000 * step.getWorkflowTemplateStepWait();
             workflowProcessInstanceStep.setStepScheduleDate(new Date(new Date().getTime() + time));
             listOfInstanceWorkflowProcessInstanceStep.add(workflowProcessInstanceStep);
         }
@@ -91,16 +94,16 @@ public class WorkflowProcessInstanceService {
         List<BillPayment> customerBillPayments = objectMapper.readValue(file, listOfPayment);
 
         for (BillPayment billPayment : customerBillPayments) {
-            processCustomerPayment(billPayment);
+            if (billPayment != null) {
+                processCustomerPayment(billPayment);
+            }
         }
     }
 
     private void processCustomerPayment(BillPayment billPayment) {
         WorkflowProcessInstance customerWorkflowProcessInstance = workflowProcessInstanceRepo.findByBillId(billPayment.getBillId());
-        if (billPayment != null) {
-            double updatedOpenAmount = customerWorkflowProcessInstance.getOpenAmount() - Double.parseDouble(billPayment.getPaymentAmount());
-            customerWorkflowProcessInstance.setOpenAmount(updatedOpenAmount);
-        }
+        double updatedOpenAmount = customerWorkflowProcessInstance.getOpenAmount() - Double.parseDouble(billPayment.getPaymentAmount());
+        customerWorkflowProcessInstance.setOpenAmount(updatedOpenAmount);
 
         if (customerWorkflowProcessInstance.getOpenAmount() <= 0
                 && customerWorkflowProcessInstance.getInstanceStatus().equals(InstanceStatusEnum.INPROGRESS)) {
@@ -144,7 +147,7 @@ public class WorkflowProcessInstanceService {
     }
 
     public WorkflowProcessInstance getInstancesById(Integer instanceId) {
-        return workflowProcessInstanceRepo.getById(instanceId.longValue());
+        return workflowProcessInstanceRepo.getReferenceById(instanceId.longValue());
     }
 }
 

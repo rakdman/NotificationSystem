@@ -1,8 +1,6 @@
-package com.debitnotification.springserver.UnitTests;
+package com.debitnotification.springserver.unittests;
 
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class UserServiceTest {
 

@@ -54,9 +54,9 @@ function EmailTemplate() {
     });
     axios
       .post(`http://localhost:9090/api/template/createtemplate`, {
-        templateName: event.templateName,
-        templateText: event.templateText,
-        templateType: "EMAIL",
+        notificationTemplateName: event.templateName,
+        notificationTemplateText: event.templateText,
+        notificationTemplateType: "EMAIL",
       })
       .then((res) => {
         console.log(res.data);

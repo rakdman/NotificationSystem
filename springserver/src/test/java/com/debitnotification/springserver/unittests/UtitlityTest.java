@@ -1,4 +1,4 @@
-package com.debitnotification.springserver.UnitTests;
+package com.debitnotification.springserver.unittests;
 
 import com.debitnotification.springserver.configuration.user.Utility;
 import org.junit.jupiter.api.Assertions;
