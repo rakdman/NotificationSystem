@@ -1,19 +1,17 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
-// import { makeStyles } from '@material-ui/core/styles';
+
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-// import Typography from '@material-ui/core/Typography';
+
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-// import MenuIcon from '@material-ui/icons/Menu';
+
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-// import { alignPropType } from 'react-bootstrap/esm/DropdownMenu';
-// import Container from '@material-ui/core/Container';
+
 import Grid from "@material-ui/core/Grid";
 
-// import { makeStyles  } from '@material-ui/core/styles';
 
 import SMSTemplate from "../templates/SMSTemplate";
 import EmailTemplate from "../templates/EmailTemplate";
@@ -21,30 +19,19 @@ import WorkflowTemplate from "../templates/WorkflowTemplate";
 import SMSTemplateView from "../templates/SMSTemplateView";
 import EmailTemplateView from "../templates/EmailTemplateView";
 import WorkflowTemplateView from "../templates/WorkflowTemplateView";
-// import HomeHeaderPublic from './HomeHeaderPublic';
+
 import { AuthContext } from "../app-context/AuthContext";
 import MonitoringHome from "../monitoring/monitoringhome";
 import LoadingHome from "../monitoring/LoadingHome";
 import Configuration from "../integration/configuration";
 import { Paper } from "@material-ui/core";
 
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     flexGrow: 1,
-//   },
-//   menuButton: {
-//     marginRight: theme.spacing(2),
-//   },
-//   title: {
-//     flexGrow: 1,
-//   },
-// }));
 
 export default function HomeHeader() {
   const [myComponent, setMyComponent] = useState();
   const { setErrorMessage, role } = useContext(AuthContext);
 
-  // const classes = useStyles();
+
   let usehistory = useHistory();
 
   const [anchorE1, setAnchorE1] = React.useState(null);
@@ -52,10 +39,6 @@ export default function HomeHeader() {
   const [anchorE3, setAnchorE3] = React.useState(null);
   const [anchorE4, setAnchorE4] = React.useState(null);
 
-  // const styles = theme => ({
-  //   // Load app bar information from the theme
-  //   toolbar: theme.mixins.toolbar,
-  // });
 
   const handleClickE1 = (event) => {
     setAnchorE1(event.currentTarget);
@@ -113,7 +96,6 @@ export default function HomeHeader() {
 
   const handleClickE3 = (event) => {
     setAnchorE3(event.currentTarget);
-    // console.log("Event.Target:"+event.currentTarget);
   };
 
   const handleCloseE3 = () => {
@@ -178,6 +160,7 @@ export default function HomeHeader() {
                 aria-controls="monitoringmenu"
                 aria-haspopup="true"
                 onClick={handleClickE3}
+
                 style={{ textTransform: "capitalize", color: "white" }}
               >
                 Monitoring
@@ -232,6 +215,9 @@ export default function HomeHeader() {
                 keepMounted
                 open={Boolean(anchorE1)}
                 onClose={handleCloseE1}
+                getContentAnchorEl={null}
+                anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}
+                transformOrigin={{vertical: 'top',horizontal: 'left',}}
               >
                 <MenuItem onClick={handleCreateEmail}>Create Email</MenuItem>
                 <MenuItem onClick={handleViewEmail}>View Email</MenuItem>
@@ -245,6 +231,9 @@ export default function HomeHeader() {
                 keepMounted
                 open={Boolean(anchorE2)}
                 onClose={handleCloseE2}
+                getContentAnchorEl={null}
+                anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}
+                transformOrigin={{vertical: 'top',horizontal: 'left',}}
               >
                 <MenuItem onClick={handleCreateWorkflow}>
                   Create Workflow
@@ -258,12 +247,13 @@ export default function HomeHeader() {
                 keepMounted
                 open={Boolean(anchorE3)}
                 onClose={handleCloseE3}
+                getContentAnchorEl={null}
+                anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}
+                transformOrigin={{vertical: 'top',horizontal: 'left',}}
               >
-                <MenuItem onClick={handleViewInstances}>
-                  View Instances
-                </MenuItem>
-                {/* <MenuItem onClick={handleViewDashboard} >View Dashboard</MenuItem> */}
+                <MenuItem onClick={handleViewInstances}>View Instances </MenuItem>
                 <MenuItem onClick={handleLoadInstances}>Load Data</MenuItem>
+                {/* <MenuItem onClick={handleViewDashboard} >View Dashboard</MenuItem> */}
               </Menu>
 
               <Menu
@@ -272,6 +262,9 @@ export default function HomeHeader() {
                 keepMounted
                 open={Boolean(anchorE4)}
                 onClose={handleCloseE4}
+                getContentAnchorEl={null}
+                anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}
+                transformOrigin={{vertical: 'top',horizontal: 'left',}}
               >
                 <MenuItem onClick={handleConfiguration}>
                   UserManagement

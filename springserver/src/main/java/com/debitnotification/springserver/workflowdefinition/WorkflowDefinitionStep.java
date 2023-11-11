@@ -18,7 +18,7 @@ public class WorkflowDefinitionStep {
     private int workflowTemplateStepWait;
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "workflowTemplateId", referencedColumnName = "workflowTemplateId")
+    @JoinColumn(name = "workflowTemplateId")
     private WorkflowDefinition workflowDefinition;
 
 }

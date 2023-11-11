@@ -46,10 +46,8 @@ function ViewWorkflowSteps() {
         params: { workflowTemplateId: idd },
       })
       .then((res) => {
-        console.log(
-          "This is from readoneWFtemplate API:" + res.data.workflowTemplateStep
-        );
-        setWfSteps(res.data.workflowTemplateStep);
+        setWfSteps(res.data.workflowDefinitionStep);
+        console.log("This is from readoneWFtemplate API:" + res.data);
         console.log("In View workflow Step API response");
       });
   }
@@ -67,7 +65,7 @@ function ViewWorkflowSteps() {
           <Table>
             <TableBody>
               <TableRow>
-                <TableCell width="23%">Waiting days</TableCell>
+                <TableCell>Waiting days</TableCell>
                 <TableCell>Step Name</TableCell>
               </TableRow>
 
