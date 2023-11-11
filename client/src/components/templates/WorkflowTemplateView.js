@@ -37,8 +37,6 @@ function WorkflowTemplateView() {
   const [workflowTemplateStep, setworkflowTemplateStep] = useState();
   const { isLoggedIn, idd, setIdd } = useContext(AuthContext);
 
-  // console.log("In View WF Template steps");
-  // console.log(isLoggedIn);
 
   if (!isLoggedIn) {
     usehistory.push("/");
@@ -46,16 +44,13 @@ function WorkflowTemplateView() {
 
   let nameInput, textInput, message;
 
-  // read data
-  // console.log('Before calling readoneinstancebyid API');
+
 
   const [wfData, setWfData] = useState(null);
   const apiURL = "http://localhost:9090/api/workflow/readallwftemplate";
   const fetchData = async () => {
     const response = await axios.get(apiURL);
-    // console.log("Getting workflowTemplateName");
     setWfData(response.data);
-    // console.log("Moving out of readallwftemplate");
   };
 
   useEffect(() => {
@@ -125,22 +120,22 @@ function WorkflowTemplateView() {
                         {" "}
                         {item.workflowTemplateName}{" "}
                       </TableCell>
-                      <TableCell size="medium">
-                        {" "}
-                        {item.workflowTemplateStep.map((step) => {
+                      {/*<TableCell size="medium">*/}
+                      {/*  {" "}*/}
+                        {item.workflowDefinitionStep.map((step) => {
                           console.log(step.workflowTemplateStepName);
-                        })}{" "}
-                      </TableCell>
+                          console.log(step.workflowTemplateStepWait);
+                        })}
+                      {/*{" "}*/}
+                      {/*</TableCell>*/}
 
                       <Button
                         color="primary"
                         variant="contained"
                         size="small"
                         onClick={() => {
-                          // console.log('View Handler Button');
                           setOpen(true);
                           setIdd(item.workflowTemplateId);
-                          // console.log('Instance view item._id:'+item._id);
                         }}
                         fullWidth="false"
                       >

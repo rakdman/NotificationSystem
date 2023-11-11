@@ -13,6 +13,7 @@ import lombok.NonNull;
 @Entity
 @Data
 @NoArgsConstructor
+@Table(name = "appuser")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -57,43 +57,41 @@ function WorkflowTemplate() {
 
     if (event.number1 && event.select1)
       steps.push({
-        workflowTemplateStepWait: event.number1,
         workflowTemplateStepName: event.select1,
+        workflowTemplateStepWait: event.number1,
       });
 
     if (event.number2 && event.select2 && steps)
       steps.push({
-        workflowTemplateStepWait: event.number2,
         workflowTemplateStepName: event.select2,
+        workflowTemplateStepWait: event.number2,
       });
 
     if (event.number3 && event.select3 && steps)
       steps.push({
-        workflowTemplateStepWait: event.number3,
         workflowTemplateStepName: event.select3,
+        workflowTemplateStepWait: event.number3,
       });
 
     if (event.number4 && event.select4 && steps)
       steps.push({
-        workflowTemplateStepWait: event.number4,
         workflowTemplateStepName: event.select4,
+        workflowTemplateStepWait: event.number4,
       });
 
     if (event.number5 && event.select5 && steps)
       steps.push({
-        workflowTemplateStepWait: event.number5,
         workflowTemplateStepName: event.select5,
+        workflowTemplateStepWait: event.number5,
       });
-
-    // axios.post(`api/workflow/create`,{workflowName:workflowName,wfsteps:[{workflowTemplateStepWait:number1,workflowTemplateStepName:select1},{workflowTemplateStepWait:number2,workflowTemplateStepName:select2},{workflowTemplateStepWait:number3,workflowTemplateStepName:select3},{workflowTemplateStepWait:number4,workflowTemplateStepName:select4},{workflowTemplateStepWait:number5,workflowTemplateStepName:select5}]})
+    // axios.post(`http://localhost:9090/api/workflow/create`,{workflowTemplateName:event.workflowName,workflowDefinitionStep:[{workflowTemplateStepWait:number1,workflowTemplateStepName:select1},{workflowTemplateStepWait:number2,workflowTemplateStepName:select2},{workflowTemplateStepWait:number3,workflowTemplateStepName:select3},{workflowTemplateStepWait:number4,workflowTemplateStepName:select4},{workflowTemplateStepWait:number5,workflowTemplateStepName:select5}]})
     axios
       .post(`http://localhost:9090/api/workflow/create`, {
         workflowTemplateName: event.workflowName,
-        workflowTemplateStep: steps,
+        workflowDefinitionStep: steps,
       })
       .then((res) => {
         console.log(res.data);
-        //    console.log("Response from workflow create API");
       });
 
     swal({
@@ -207,7 +205,7 @@ function WorkflowTemplate() {
                 {/* {smsTemp && smsTemp.map((item,index)=> {array.push(item.tname)})} */}
                 {smsTemp &&
                   smsTemp.map((item, index) => {
-                    array.push(item.templateName);
+                    array.push(item.notificationTemplateName);
                   })}
                 <TableRow>
                   <TableCell>

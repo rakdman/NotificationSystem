@@ -29,6 +29,7 @@ public class UserService implements UserDetailsService {
 
     public ResponseEntity<User> createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        System.out.println(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
