@@ -18,7 +18,6 @@ import { AuthContext } from "../app-context/AuthContext";
 // import HomeHeader from '../home/HomeHeader';
 // import HomeHeaderPublic from '../home/HomeHeaderPublic';
 import swal from "sweetalert";
-import {lightBlue} from "@material-ui/core/colors";
 
 function Configuration() {
   let usehistory = useHistory();
@@ -30,6 +29,7 @@ function Configuration() {
     usehistory.push("/configuration");
   }
 
+  // console.log(role)
   const [instanceData, setInstanceData] = useState(null);
   // const [refresh,setRefresh] = useState();
 
@@ -132,7 +132,7 @@ function Configuration() {
 
               <Table style={{ width: "120%" }}>
                 <TableBody>
-                  <TableRow style={{background:'lightBlue'}}>
+                  <TableRow>
                     <TableCell size="medium">
                       {" "}
                       <Typography variant="subtitle1">
@@ -174,7 +174,6 @@ function Configuration() {
                           <TableCell size="medium"> {item.userName} </TableCell>
                           <TableCell size="medium">
                             {" "}
-                            {console.log(item.role)}
                             {item.role === "1" ? "Admin" : "Normal"}{" "}
                           </TableCell>
                           <TableCell size="medium">
@@ -184,7 +183,7 @@ function Configuration() {
 
                           <ButtonGroup>
                             {/* <Button style= {{padding: "5px 10px"}} onClick ={()=> setUserName(item.username)}  variant="contained" fullWidth='false'>Select</Button> */}
-                            {/*{item.userName != "rakdman" && (*/}
+                            {item.userName != "rakdman" && (
                               <Button
                                 color="primary"
                                 size="small"
@@ -197,10 +196,9 @@ function Configuration() {
                               >
                                 Approve
                               </Button>
-                            <span style={{margin: '0.1px'}}/>
-                            {/*)}*/}
+                            )}
                             {/* <Button style= {{padding: "5px 25px"}} onClick ={lockHandler}  variant="contained" fullWidth='false'>Lock</Button>     */}
-                            {/*{item.userName != "rakdman" && (*/}
+                            {item.userName != "rakdman" && (
                               <Button
                                 color="primary"
                                 size="small"
@@ -211,7 +209,7 @@ function Configuration() {
                               >
                                 Lock
                               </Button>
-                            {/*)}*/}
+                            )}
                           </ButtonGroup>
                         </TableRow>
                       );

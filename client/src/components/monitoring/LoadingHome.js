@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
+// import {useHistory} from 'react-router-dom';
 import axios from "axios";
 import swal from "sweetalert";
+// import HomeHeader from '../home/HomeHeader';
+// import { FormControl,TextField,InputLabel, TextareaAutosize, Button,Typography,ButtonGroup,Table,TableRow,TableBody,TableCell,TableContainer,Paper,Grid} from '@material-ui/core';
 import {
   FormControl,
   Button,
@@ -13,8 +16,7 @@ import {
   Grid,
 } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
-import {Alert} from "react-bootstrap";
-import {AlertTitle} from "@material-ui/lab";
+// import {AuthContext} from '../app-context/AuthContext';
 
 function LoadingHome() {
   const [filename, setFileName] = useState(null);
@@ -24,9 +26,11 @@ function LoadingHome() {
 
   const apiURL = `api/integration/readloadschedule`;
   const fetchJobData = async () => {
+    //   const response = await axios.get(apiURL,{params:{jobname:'loadFileJob'}})
     await axios
       .get(apiURL, { params: { jobname: "loadFileJob" } })
       .then((res) => {
+        //   console.log(res.data)
         setInstanceData(res.data);
       });
   };
@@ -84,18 +88,20 @@ function LoadingHome() {
       axios
         .post(
           `http://localhost:9090/api/instances/loadpaymentfile`
+          // {
+          //   fileName: filename,
+          // }
         )
         .then((res) => console.log("Payment File Uploaded"));
     }
 
     loadallpaymentfiles();
 
-    //
-    // swal({
-    //   title: "Started",
-    //   text: "Loading job Started",
-    //   icon: "success",
-    // });
+    swal({
+      title: "Started",
+      text: "Loading job Started",
+      icon: "success",
+    });
   };
 
   return (
@@ -112,7 +118,7 @@ function LoadingHome() {
               <br />
 
               <Table style={{ width: "100%" }}>
-                <TableBody style={{background:'lightBlue'}}>
+                <TableBody>
                   <TableRow>
                     <TableCell size="medium">
                       {" "}
