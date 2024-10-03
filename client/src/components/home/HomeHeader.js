@@ -11,7 +11,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 
 import Grid from "@material-ui/core/Grid";
-
+import { createTheme } from "@mui/material/styles";
 
 import SMSTemplate from "../templates/SMSTemplate";
 import EmailTemplate from "../templates/EmailTemplate";
@@ -21,16 +21,14 @@ import EmailTemplateView from "../templates/EmailTemplateView";
 import WorkflowTemplateView from "../templates/WorkflowTemplateView";
 
 import { AuthContext } from "../app-context/AuthContext";
-import MonitoringHome from "../monitoring/monitoringhome";
+import MonitoringHome from "../monitoring/MonitoringHome";
 import LoadingHome from "../monitoring/LoadingHome";
 import Configuration from "../integration/configuration";
 import { Paper } from "@material-ui/core";
 
-
 export default function HomeHeader() {
   const [myComponent, setMyComponent] = useState();
   const { setErrorMessage, role } = useContext(AuthContext);
-
 
   let usehistory = useHistory();
 
@@ -38,7 +36,6 @@ export default function HomeHeader() {
   const [anchorE2, setAnchorE2] = React.useState(null);
   const [anchorE3, setAnchorE3] = React.useState(null);
   const [anchorE4, setAnchorE4] = React.useState(null);
-
 
   const handleClickE1 = (event) => {
     setAnchorE1(event.currentTarget);
@@ -146,8 +143,14 @@ export default function HomeHeader() {
     usehistory.push("HomeHeaderPublic");
   };
 
+  const theme = createTheme({
+    palette: {
+      primary: { main: "#F5EBFF" },
+    },
+  });
+
   return (
-    <Grid container direction="row" alignItems="flex-start">
+    <Grid container direction="row" alignItems="flex-start" theme={theme}>
       <AppBar position="fixed" color="primary">
         <Grid item>
           <Toolbar variant="dense">
@@ -160,7 +163,6 @@ export default function HomeHeader() {
                 aria-controls="monitoringmenu"
                 aria-haspopup="true"
                 onClick={handleClickE3}
-
                 style={{ textTransform: "capitalize", color: "white" }}
               >
                 Monitoring
@@ -216,8 +218,8 @@ export default function HomeHeader() {
                 open={Boolean(anchorE1)}
                 onClose={handleCloseE1}
                 getContentAnchorEl={null}
-                anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}
-                transformOrigin={{vertical: 'top',horizontal: 'left',}}
+                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                transformOrigin={{ vertical: "top", horizontal: "left" }}
               >
                 <MenuItem onClick={handleCreateEmail}>Create Email</MenuItem>
                 <MenuItem onClick={handleViewEmail}>View Email</MenuItem>
@@ -232,8 +234,8 @@ export default function HomeHeader() {
                 open={Boolean(anchorE2)}
                 onClose={handleCloseE2}
                 getContentAnchorEl={null}
-                anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}
-                transformOrigin={{vertical: 'top',horizontal: 'left',}}
+                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                transformOrigin={{ vertical: "top", horizontal: "left" }}
               >
                 <MenuItem onClick={handleCreateWorkflow}>
                   Create Workflow
@@ -248,10 +250,12 @@ export default function HomeHeader() {
                 open={Boolean(anchorE3)}
                 onClose={handleCloseE3}
                 getContentAnchorEl={null}
-                anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}
-                transformOrigin={{vertical: 'top',horizontal: 'left',}}
+                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                transformOrigin={{ vertical: "top", horizontal: "left" }}
               >
-                <MenuItem onClick={handleViewInstances}>View Instances </MenuItem>
+                <MenuItem onClick={handleViewInstances}>
+                  View Instances{" "}
+                </MenuItem>
                 <MenuItem onClick={handleLoadInstances}>Load Data</MenuItem>
                 {/* <MenuItem onClick={handleViewDashboard} >View Dashboard</MenuItem> */}
               </Menu>
@@ -263,8 +267,8 @@ export default function HomeHeader() {
                 open={Boolean(anchorE4)}
                 onClose={handleCloseE4}
                 getContentAnchorEl={null}
-                anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}
-                transformOrigin={{vertical: 'top',horizontal: 'left',}}
+                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                transformOrigin={{ vertical: "top", horizontal: "left" }}
               >
                 <MenuItem onClick={handleConfiguration}>
                   UserManagement

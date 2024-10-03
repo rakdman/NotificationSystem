@@ -23,39 +23,39 @@ function LoadingHome() {
   const [instanceData, setInstanceData] = useState(null);
 
   // File loading
+  //
+  // const apiURL = `api/integration/readloadschedule`;
+  // const fetchJobData = async () => {
+  //   //   const response = await axios.get(apiURL,{params:{jobname:'loadFileJob'}})
+  //   await axios
+  //     .get(apiURL, { params: { jobname: "loadFileJob" } })
+  //     .then((res) => {
+  //       //   console.log(res.data)
+  //       setInstanceData(res.data);
+  //     });
+  // };
 
-  const apiURL = `api/integration/readloadschedule`;
-  const fetchJobData = async () => {
-    //   const response = await axios.get(apiURL,{params:{jobname:'loadFileJob'}})
-    await axios
-      .get(apiURL, { params: { jobname: "loadFileJob" } })
-      .then((res) => {
-        //   console.log(res.data)
-        setInstanceData(res.data);
-      });
-  };
-
-  useEffect(() => {
-    fetchJobData();
-  }, []);
+  // useEffect(() => {
+  //   fetchJobData();
+  // }, []);
 
   // Email sending
 
   const [instanceEmailData, setInstanceEmailData] = useState(null);
 
   const apiEmailURL = `api/integration/readloadschedule`;
-  const fetchEmailJobData = async () => {
-    await axios
-      .get(apiEmailURL, { params: { jobname: "sendEmailJob" } })
-      .then((res) => {
-        //   console.log(res.data)
-        setInstanceEmailData(res.data);
-      });
-  };
+  // const fetchEmailJobData = async () => {
+  //   await axios
+  //     .get(apiEmailURL, { params: { jobname: "sendEmailJob" } })
+  //     .then((res) => {
+  //       //   console.log(res.data)
+  //       setInstanceEmailData(res.data);
+  //     });
+  // };
 
-  useEffect(() => {
-    fetchEmailJobData();
-  }, []);
+  // useEffect(() => {
+  //   fetchEmailJobData();
+  // }, []);
 
   let uploadDataFile = (event) => {
     const filename = "customerdata.json";

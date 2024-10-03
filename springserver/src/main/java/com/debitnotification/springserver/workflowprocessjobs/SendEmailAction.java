@@ -2,6 +2,8 @@ package com.debitnotification.springserver.workflowprocessjobs;
 
 import com.debitnotification.springserver.workflowprocessinstance.WorkflowProcessInstance;
 import com.debitnotification.springserver.workflowprocessinstance.WorkflowProcessInstanceStep;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -13,7 +15,6 @@ public class SendEmailAction {
     public SendEmailAction(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
-
 
     public boolean sendNotificationEmail(WorkflowProcessInstance workflowProcessInstance, WorkflowProcessInstanceStep step) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();

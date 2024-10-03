@@ -5,20 +5,33 @@ import com.debitnotification.springserver.workflowprocessinstance.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Data
-@AllArgsConstructor
-@Configuration
 @Slf4j
+@Component
 public class WorkflowProcessingBatchJob {
+
+
     private final WorkflowProcessInstanceRepo workflowProcessInstanceRepo;
+
+
     private final SendEmailAction sendEmailAction;
 
-    @Scheduled(fixedRate = 36000000)
+    public WorkflowProcessingBatchJob(WorkflowProcessInstanceRepo workflowProcessInstanceRepo, SendEmailAction sendEmailAction) {
+        this.workflowProcessInstanceRepo = workflowProcessInstanceRepo;
+        this.sendEmailAction = sendEmailAction;
+    }
+
+    @Value("${spring.mail.send.email.enable}")
+    private boolean enableSendEmail;
+
+    @Scheduled(fixedRate = 360000000)
     public void processWorkflow() {
         List<WorkflowProcessInstance> inProgressWorkflowProcessInstances = extractPendingProcessInstances();
         for (WorkflowProcessInstance workflowProcessInstance : inProgressWorkflowProcessInstances) {
@@ -35,7 +48,7 @@ public class WorkflowProcessingBatchJob {
 
     private List<WorkflowProcessInstance> extractPendingProcessInstances() {
         return workflowProcessInstanceRepo.findAll().stream()
-                .filter(instance -> !instance.getInstanceStatus().equals(InstanceStatusEnum.FINISHED))
+                .filter(instance -> !(InstanceStatusEnum.FINISHED).equals(instance.getInstanceStatus())  )
                 .filter(instance -> instance.getOpenAmount() > 0).toList();
     }
 
@@ -44,7 +57,10 @@ public class WorkflowProcessingBatchJob {
         boolean areAllStepCompleted;
 
         if (pendingStep != null) {
-            emailStatus = sendEmailAction.sendNotificationEmail(workflowProcessInstance, pendingStep);
+
+      emailStatus =
+          (enableSendEmail
+              && sendEmailAction.sendNotificationEmail(workflowProcessInstance, pendingStep));
             if (emailStatus) {
                 pendingStep.setStepStatus(InstanceStepStatusEnum.COMPLETED);
             }
