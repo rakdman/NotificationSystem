@@ -1,0 +1,10 @@
+[
+  {
+    "billId": "BILL0901",
+    "paymentAmount": 300
+  },
+  {
+    "billId": "BILL0902",
+    "paymentAmount": 400
+  }
+]

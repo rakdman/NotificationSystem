@@ -1,0 +1,5 @@
+/client/.idea/*
+.idea/*
+/client_svelte/node_modules/*
+/client_svelte/.vscode/*
+/client/.vscode/*
