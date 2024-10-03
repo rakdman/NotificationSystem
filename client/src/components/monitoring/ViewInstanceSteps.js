@@ -1,10 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-// import swal from 'sweetalert';
-// import HomeHeader from '../home/HomeHeader';
-
-// import { FormControl,TextField,InputLabel, TextareaAutosize, Button,Typography,ButtonGroup,Table,TableRow,TableBody,TableCell,TableContainer} from '@material-ui/core';
 import {
   FormControl,
   Typography,
@@ -20,7 +16,6 @@ import { AuthContext } from "../app-context/AuthContext";
 function ViewInstanceSteps() {
   const usehistory = useHistory();
 
-  //let userAction;
   let submitHandler;
 
   const [firstName, setFirstName] = useState();
@@ -36,14 +31,11 @@ function ViewInstanceSteps() {
     usehistory.push("/");
   }
 
-  // let nameInput, textInput,message;
-
   // read data
   console.log("Before calling readoneinstancebyid API" + idd);
 
   function getData() {
     // axios.get("api/instances/readoneinstancebyid/",{params:{idd:idd}}).then(
-    //     res => {console.log('This is firstName from getData function:'+res.data.firstName)
     //     setFirstName(res.data.firstName);
     //     setLastName(res.data.lastName);
 
@@ -123,6 +115,7 @@ function ViewInstanceSteps() {
                   return (
                     <TableRow>
                       {/* <TableCell>{item._id}</TableCell> */}
+                      <TableCell>{index}</TableCell>
                       <TableCell>{item.stepName}</TableCell>
                       <TableCell>
                         {item.stepScheduleDate &&

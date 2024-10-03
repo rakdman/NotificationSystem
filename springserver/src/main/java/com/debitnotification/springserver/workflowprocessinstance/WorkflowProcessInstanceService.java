@@ -149,5 +149,14 @@ public class WorkflowProcessInstanceService {
     public WorkflowProcessInstance getInstancesById(Integer instanceId) {
         return workflowProcessInstanceRepo.getReferenceById(instanceId.longValue());
     }
+
+    public WorkflowProcessInstance updateInstance(Integer instanceId, InstanceStatusEnum status) {
+        WorkflowProcessInstance instance = workflowProcessInstanceRepo.getReferenceById(Long.valueOf(instanceId));
+        if(instance!=null) {
+            instance.setInstanceStatus(status);
+            workflowProcessInstanceRepo.save(instance);
+        }
+        return instance;
+    }
 }
 

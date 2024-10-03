@@ -5,6 +5,7 @@ import com.debitnotification.springserver.configuration.security.jwtmodel.JwtRes
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -29,7 +30,7 @@ public class UserController {
     }
 
     @PostMapping("/authenticate")
-    public JwtResponse authenticate(@RequestBody @Valid JwtRequest jwtRequest) {
+    public JwtResponse authenticate(@RequestBody @Valid @NotNull JwtRequest jwtRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(jwtRequest.getUserName(), jwtRequest.getPassword()));

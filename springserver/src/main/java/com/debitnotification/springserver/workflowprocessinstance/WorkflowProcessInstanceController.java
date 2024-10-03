@@ -2,6 +2,7 @@ package com.debitnotification.springserver.workflowprocessinstance;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,11 @@ public class WorkflowProcessInstanceController {
     @GetMapping(value = "/readoneinstancebyid", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkflowProcessInstance> readInstanceById(@RequestParam Integer instanceId) {
         return ResponseEntity.ok(workflowProcessInstanceService.getInstancesById(instanceId));
+    }
+
+    @PostMapping(name = "/updateinstance")
+    public ResponseEntity<WorkflowProcessInstance> updateInstance(@RequestParam Integer instanceId,@RequestParam InstanceStatusEnum status) {
+        return ResponseEntity.ok(workflowProcessInstanceService.updateInstance(instanceId,status));
     }
 
 

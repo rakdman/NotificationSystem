@@ -1,9 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-// import HomeHeader from '../home/HomeHeader';
-// import swal from 'sweetalert';
-
 import {
   FormControl,
   TextField,
